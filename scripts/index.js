@@ -1,26 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import SpellingTeacherUI from './SpellingTeacherUI'
-// import md5 from 'md5'
+import md5 from 'md5'
 import { makeStore, serializeAppState } from './SpellingTeacherUI/store'
 
-/*var appStateMD5
-var originalsMD5 = {}*/
+var appStateMD5
 
-/*const LOCAL_STORAGE = {
+const LOCAL_STORAGE = {
   APP_STATE: 'app-state',
-  ORIGINAL_KEY_START: 'original-',
-}*/
+}
 
-const store = makeStore({})
+const store = makeStore(readStateFromLocalStorage())
 const app = <SpellingTeacherUI store={store} />
 const ctnr = document.querySelector('#root')
 
 ReactDOM.render(app, ctnr)
 
-// store.subscribe(saveStateInLocalStorage)
+store.subscribe(saveStateInLocalStorage)
 
-/*function saveStateInLocalStorage() {
+function saveStateInLocalStorage() {
   if (!localStorage) {
     return
   }
@@ -28,10 +26,9 @@ ReactDOM.render(app, ctnr)
   const state = store.getState()
 
   storeAppStateLocally(state)
-  storeOriginalsLocally(state)
-}*/
+}
 
-/*function storeAppStateLocally(state) {
+function storeAppStateLocally(state) {
   const prevAppStateMD5 = appStateMD5
   const appState = serializeAppState(state)
   const appStateJsonString = JSON.stringify(appState)
@@ -43,32 +40,9 @@ ReactDOM.render(app, ctnr)
   }
 
   localStorage.setItem(LOCAL_STORAGE.APP_STATE, JSON.stringify(appState))
-}*/
+}
 
-/*function storeOriginalsLocally(state) {
-  const { items } = state.books
-  const ids = items.map(book => book.id)
-
-  Object.keys(originalsMD5).forEach(id => {
-    if (ids.includes(id)) {
-      return
-    }
-
-    localStorage.removeItem(getOriginalKey(id))
-  })
-
-  items.forEach(book => {
-    const { id, original } = book
-
-    if (originalsMD5[id] === JSON.stringify(original)) {
-      return
-    }
-
-    localStorage.setItem(getOriginalKey(id), original)
-  })
-}*/
-
-/*function readStateFromLocalStorage() {
+function readStateFromLocalStorage() {
   if (!localStorage) {
     return {}
   }
@@ -79,13 +53,5 @@ ReactDOM.render(app, ctnr)
     return {}
   }
 
-  const state = JSON.parse(appStateJsonString)
-
-  state.books.items.forEach(book => {
-    const { id } = book
-
-    book.original = localStorage.getItem(getOriginalKey(id))
-  })
-
-  return state
-}*/
+  return JSON.parse(appStateJsonString)
+}

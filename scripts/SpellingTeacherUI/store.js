@@ -8,6 +8,11 @@ import {
   serializeState as serializeInternalState,
 } from './reducers/internal'
 
+import {
+  getInitState as getFormInitState,
+  serializeState as serializeFormState,
+} from './reducers/form'
+
 import api from './middlewares/api'
 
 export function makeStore(data) {
@@ -33,15 +38,18 @@ function getMiddleware() {
 function deserialize(data) {
   const {
     internal={},
+    form={},
   } = data || {}
 
   return {
     internal: getInternalInitState(internal),
+    form: getFormInitState(form),
   }
 }
 
 export function serializeAppState(state) {
   return {
     internal: serializeInternalState(state.internal),
+    form: serializeFormState(state.form),
   }
 }

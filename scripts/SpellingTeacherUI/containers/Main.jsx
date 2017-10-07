@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Form from './Form'
 import '../style/Form.less'
 
 import {
@@ -34,11 +35,7 @@ class Main extends Component {
       return null
     }
 
-    return (
-      <div>
-        <textarea className="enter-test-words"></textarea>
-      </div>
-    )
+    return <Form />
   }
 
   renderTrainingUI() {
