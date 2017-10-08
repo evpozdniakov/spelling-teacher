@@ -12,15 +12,17 @@
     "compat",
     "react"
   ],
-  "ecmaFeatures": {
-    "jsx": true,
-    "modules": true
-  },
   "rules": {
+    "prefer-const": "off",
+    "import/prefer-default-export": "off",
     "arrow-parens": ["off"],
     "compat/compat": 2,
     "consistent-return": "off",
     "comma-dangle": "off",
+    "semi": "off",
+    "brace-style": ["error", "stroustrup"],
+    "no-underscore-dangle": "off",
+    "object-curly-spacing": "off",
     "generator-star-spacing": "off",
     "import/no-unresolved": ["error", { "ignore": ["electron"] }],
     "import/no-extraneous-dependencies": "off",

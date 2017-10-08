@@ -1,10 +1,19 @@
-import { combineReducers } from 'redux'
-import dictionary from './dictionary'
-import form from './form'
-import internal from './internal'
+/* eslint global-require: "off", import/no-dynamic-require: "off" */
 
-export default combineReducers({
-  dictionary,
-  form,
-  internal,
-})
+import { combineReducers } from 'redux'
+
+export const reducerNames = [
+  'dictionary',
+  'form',
+  'internal',
+  'training',
+]
+
+export const combinedReducers = combineReducers(reducers())
+
+function reducers() {
+  return reducerNames.reduce((res, reducerName) => ({
+    ...res,
+    [reducerName]: require(`./${reducerName}`).default,
+  }), {})
+}

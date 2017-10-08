@@ -46,6 +46,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
+
 const MODE = process.env.NODE_ENV || 'development';
 
 module.exports = {
@@ -87,5 +88,3 @@ module.exports = {
     ]
   }
 };
-
-

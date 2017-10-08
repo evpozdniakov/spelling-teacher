@@ -1,16 +1,17 @@
+/* global NODE_ENV */
+/* eslint global-require: "off", import/no-dynamic-require: "off" */
+
 import { createStore, compose, applyMiddleware } from 'redux'
 import { createLogger } from 'redux-logger'
 
-import reducer from './reducers'
-
-const reducerNames = ['internal', 'form', 'dictionary']
+import { reducerNames, combinedReducers } from './reducers'
 
 import api from './middlewares/api'
 
 export function makeStore(data) {
   const initState = deserialize(data)
   const middlewares = compose(getMiddleware())
-  const store = createStore(reducer, initState, middlewares)
+  const store = createStore(combinedReducers, initState, middlewares)
 
   if (NODE_ENV === 'development') {
     window.store = store
@@ -27,7 +28,7 @@ function getMiddleware() {
   return applyMiddleware(api)
 }
 
-function deserialize(data={}) {
+function deserialize(data = {}) {
   const reducerStates = reducerNames.map(reducerName => {
     const { getInitState } = require(`./reducers/${reducerName}`)
     const state = getInitState(data[reducerName] || {})
@@ -35,12 +36,10 @@ function deserialize(data={}) {
     return {reducerName, state}
   })
 
-  const state = reducerStates.reduce((res, item) => {
-    return {
-      ...res,
-      [item.reducerName]: item.state,
-    }
-  }, {})
+  const state = reducerStates.reduce((res, item) => ({
+    ...res,
+    [item.reducerName]: item.state,
+  }), {})
 
   return state
 }
@@ -53,12 +52,10 @@ export function serializeAppState(state) {
     return {reducerName, data}
   })
 
-  const data = reducerData.reduce((res, item) => {
-    return {
-      ...res,
-      [item.reducerName]: item.data,
-    }
-  }, {})
+  const data = reducerData.reduce((res, item) => ({
+    ...res,
+    [item.reducerName]: item.data,
+  }), {})
 
   return data
 }

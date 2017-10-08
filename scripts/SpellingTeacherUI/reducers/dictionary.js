@@ -1,19 +1,34 @@
+import md5 from 'md5'
+
 import {
   SAVE,
   _GROUP,
 } from '../constants'
 
-export default (state={}, action) => {
+export default (state = {}, action) => {
   const { type, data } = action
 
   switch (type) {
     case SAVE + _GROUP: {
-      let { title, words } = data
-      let group = {title, words}
+      let { id, title, words } = data
+      let groups = cloneGroups(state)
+
+      if (id) {
+        let group = groups.find(item => item.id === id)
+
+        Object.assign(group, {title, words})
+      }
+      else {
+        groups = groups.concat({
+          id: md5(Math.random()),
+          title,
+          words,
+        })
+      }
 
       return {
         ...state,
-        groups: cloneGroups(state).concat(group),
+        groups,
       }
     }
 
@@ -24,7 +39,7 @@ export default (state={}, action) => {
 
 export function getInitState(data) {
   const {
-    groups=[],
+    groups = [],
   } = data || {}
 
   return {

@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import SpellingTeacherUI from './SpellingTeacherUI'
 import md5 from 'md5'
+import SpellingTeacherUI from './SpellingTeacherUI'
 import { makeStore, serializeAppState } from './SpellingTeacherUI/store'
 
-var appStateMD5
+let appStateMD5
 
 const LOCAL_STORAGE = {
   APP_STATE: 'app-state',

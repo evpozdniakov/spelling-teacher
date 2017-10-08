@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { changeFormField } from '../actions/form'
 import { saveGroup } from '../actions/dictionary'
+import { openMainPage } from '../actions/internal'
 
 import '../style/Form.less'
 
@@ -25,6 +26,12 @@ class Form extends Component {
     }
   }
 
+  curryCancelEditing() {
+    return () => {
+      this.props.openMainPageAction()
+    }
+  }
+
   currySaveForm() {
     return () => {
       const { title, words } = this.props.form
@@ -38,7 +45,7 @@ class Form extends Component {
       <div>
         {this.renderGroupTitleField()}
         {this.renderGroupWordsField()}
-        {this.renderSaveButton()}
+        {this.renderControls()}
       </div>
     )
   }
@@ -78,17 +85,30 @@ class Form extends Component {
     )
   }
 
+  renderControls() {
+    return (
+      <div className="controls">
+        {this.renderCancelButton()}
+        {this.renderSaveButton()}
+      </div>
+    )
+  }
+
+  renderCancelButton() {
+    const props = {
+      onClick: this.curryCancelEditing(),
+    }
+
+    return <button {...props}>Cancel</button>
+  }
+
   renderSaveButton() {
     const props = {
       disabled: this.isFormInvalid,
       onClick: this.currySaveForm(),
     }
 
-    return (
-      <div>
-        <button {...props}>Save</button>
-      </div>
-    )
+    return <button {...props}>Save</button>
   }
 }
 
@@ -98,4 +118,5 @@ export default connect(state => {
 }, {
   changeFormFieldAction: changeFormField,
   saveGroupAction: saveGroup,
+  openMainPageAction: openMainPage,
 })(Form)

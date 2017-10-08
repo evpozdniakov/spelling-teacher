@@ -1,29 +1,17 @@
 import {
-  EDIT,
-  OPEN,
-  SAVE,
-  _FORM,
-  _GROUP,
-  _MAIN,
-  _PAGE,
+  CHANGE,
+  _SPELLING,
+  _USER,
 } from '../constants'
 
 export default (state = {}, action) => {
   const { type, data } = action
 
   switch (type) {
-    case EDIT + _GROUP:
+    case CHANGE + _USER + _SPELLING:
       return {
         ...state,
-        mode: _FORM,
-        groupId: data.id,
-      }
-
-    case OPEN + _MAIN + _PAGE:
-    case SAVE + _GROUP:
-      return {
-        ...state,
-        mode: _MAIN + _PAGE,
+        userSpelling: data.string,
       }
 
     default:
@@ -33,13 +21,11 @@ export default (state = {}, action) => {
 
 export function getInitState(data) {
   const {
-    mode = _FORM,
-    groupId = null,
+    userSpelling = '',
   } = data || {}
 
   return {
-    mode,
-    groupId,
+    userSpelling,
   }
 }
 
