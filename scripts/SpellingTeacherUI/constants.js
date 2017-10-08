@@ -1,7 +1,8 @@
 export const CHANGE = 'CHANGE'
-export const SAVE = 'SAVE'
-export const OPEN = 'OPEN'
+export const DELETE = 'DELETE'
 export const EDIT = 'EDIT'
+export const OPEN = 'OPEN'
+export const SAVE = 'SAVE'
 
 export const _FIELD = '_FIELD'
 export const _FORM = '_FORM'

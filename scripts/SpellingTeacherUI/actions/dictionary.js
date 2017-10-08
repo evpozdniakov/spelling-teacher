@@ -1,8 +1,16 @@
 import {
-  SAVE,
+  DELETE,
   EDIT,
+  SAVE,
   _GROUP,
 } from '../constants'
+
+export function deleteGroup(id) {
+  return {
+    type: DELETE + _GROUP,
+    data: {id},
+  }
+}
 
 export function saveGroup(title, words) {
   return {
