@@ -1,4 +1,5 @@
 import {
+  ADD,
   EDIT,
   OPEN,
   SAVE,
@@ -12,6 +13,13 @@ export default (state = {}, action) => {
   const { type, data } = action
 
   switch (type) {
+    case ADD + _GROUP:
+      return {
+        ...state,
+        mode: _FORM,
+        groupId: null,
+      }
+
     case EDIT + _GROUP:
       return {
         ...state,

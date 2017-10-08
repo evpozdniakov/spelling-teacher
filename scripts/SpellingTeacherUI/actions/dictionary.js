@@ -1,4 +1,5 @@
 import {
+  ADD,
   DELETE,
   EDIT,
   SAVE,
@@ -23,5 +24,12 @@ export function editGroup(id) {
   return {
     type: EDIT + _GROUP,
     data: {id},
+  }
+}
+
+export function addGroup() {
+  return {
+    type: ADD + _GROUP,
+    data: {},
   }
 }

@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { editGroup, deleteGroup } from '../actions/dictionary'
+import { addGroup, editGroup, deleteGroup } from '../actions/dictionary'
 
 class Dictionary extends Component {
-  curryUseGroup() {}
+  curryUseGroup(id) {
+    
+  }
+
+  curryAddGroup() {
+    return () => {
+      this.props.addGroupAction()
+    }
+  }
 
   curryEditGroup(id) {
     return () => {
@@ -20,7 +28,21 @@ class Dictionary extends Component {
   render() {
     return (
       <div className="dictionary">
+        {this.renderTitle()}
+        {this.renderAddButton()}
         {this.renderGroups()}
+      </div>
+    )
+  }
+
+  renderTitle() {
+    return <h1>Dictionary</h1>
+  }
+
+  renderAddButton() {
+    return (
+      <div className="controls">
+        <button onClick={this.curryAddGroup()}>Add words</button>
       </div>
     )
   }
@@ -34,8 +56,8 @@ class Dictionary extends Component {
 
     return (
       <div key={id} className="group">
-        <h3 className="title" onClick={this.curryUseGroup(id)}>
-          {title}
+        <h3 className="title">
+          <a href="javascript:;" onClick={this.curryUseGroup(id)}>{title}</a>
         </h3>
 
         <div className="controls">
@@ -55,6 +77,7 @@ export default connect(state => {
   const { internal, dictionary } = state
   return {internal, dictionary}
 }, {
+  addGroupAction: addGroup,
   editGroupAction: editGroup,
   deleteGroupAction: deleteGroup,
 })(Dictionary)
