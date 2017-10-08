@@ -6,6 +6,7 @@ export const reducerNames = [
   'dictionary',
   'form',
   'internal',
+  'stats',
   'training',
 ]
 

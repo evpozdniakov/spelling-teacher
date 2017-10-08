@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { openGroupForm } from '../actions/internal'
 import { deleteGroup } from '../actions/dictionary'
+import { startTraining } from '../actions/training'
 
 class Dictionary extends Component {
-  curryUseGroup(id) {
-    
+  curryStartTraining(id) {
+    return () => {
+      this.props.startTrainingAction(id)
+    }
   }
 
   curryAddGroup() {
@@ -58,7 +61,7 @@ class Dictionary extends Component {
     return (
       <div key={id} className="group">
         <h3 className="title">
-          <a href="javascript:;" onClick={this.curryUseGroup(id)}>{title}</a>
+          <a href="javascript:;" onClick={this.curryStartTraining(id)}>{title}</a>
         </h3>
 
         <div className="controls">
@@ -80,4 +83,5 @@ export default connect(state => {
 }, {
   deleteGroupAction: deleteGroup,
   openGroupFormAction: openGroupForm,
+  startTrainingAction: startTraining,
 })(Dictionary)

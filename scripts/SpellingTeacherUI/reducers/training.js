@@ -1,6 +1,8 @@
 import {
   CHANGE,
+  START,
   _SPELLING,
+  _TRAINING,
   _USER,
 } from '../constants'
 
@@ -14,6 +16,12 @@ export default (state = {}, action) => {
         userSpelling: data.string,
       }
 
+    case START + _TRAINING:
+      return {
+        ...state,
+        groupId: data.groupId,
+      }
+
     default:
       return state
   }
@@ -22,10 +30,12 @@ export default (state = {}, action) => {
 export function getInitState(data) {
   const {
     userSpelling = '',
+    groupId = null,
   } = data || {}
 
   return {
     userSpelling,
+    groupId,
   }
 }
 

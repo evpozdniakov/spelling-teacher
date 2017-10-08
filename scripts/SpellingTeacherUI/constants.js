@@ -2,6 +2,7 @@ export const CHANGE = 'CHANGE'
 export const CREATE = 'CREATE'
 export const DELETE = 'DELETE'
 export const OPEN = 'OPEN'
+export const START = 'START'
 export const UPDATE = 'UPDATE'
 
 export const _FIELD = '_FIELD'

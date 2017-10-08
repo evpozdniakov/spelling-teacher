@@ -10,6 +10,14 @@ import { openMainPage } from '../actions/internal'
 // } from '../constants'
 
 class Training extends Component {
+  get group() {
+    const { groupId } = this.props.training
+    const { groups } = this.props.dictionary
+    const group = groups.find(item => item.id === groupId)
+
+    return group
+  }
+
   curryChangeWord() {
     return ev => {
       const string = ev.target.value
@@ -44,6 +52,9 @@ class Training extends Component {
     return (
       <div className="training-ui">
         {this.renderBackButton()}
+        {this.renderTitle()}
+        {this.renderDictionaryInfo()}
+        {this.renderTestingWord()}
         {this.renderInputField()}
       </div>
     )
@@ -59,6 +70,27 @@ class Training extends Component {
         <button {...props}>⇦</button>
       </div>
     )
+  }
+
+  renderTitle() {
+    return <h1>Training</h1>
+  }
+
+  renderDictionaryInfo() {
+    const { title, words } = this.group
+
+    return (
+      <div className="dictionary-info">
+        <div className="name">{title}</div>
+        <div className="words-count">Words: {words.length}</div>
+      </div>
+    )
+  }
+
+  renderTestingWord() {
+
+
+    return <div className="testing-word">testingWord</div>
   }
 
   renderInputField() {

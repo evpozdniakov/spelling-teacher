@@ -1,9 +1,11 @@
 import {
   OPEN,
+  START,
   _FORM,
   _GROUP,
   _MAIN,
   _PAGE,
+  _TRAINING,
 } from '../constants'
 
 export default (state = {}, action) => {
@@ -21,6 +23,12 @@ export default (state = {}, action) => {
       return {
         ...state,
         mode: _MAIN + _PAGE,
+      }
+
+    case START + _TRAINING:
+      return {
+        ...state,
+        mode: _TRAINING,
       }
 
     default:
