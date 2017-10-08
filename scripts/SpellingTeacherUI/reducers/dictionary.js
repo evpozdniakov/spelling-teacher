@@ -1,8 +1,9 @@
 import md5 from 'md5'
 
 import {
+  CREATE,
   DELETE,
-  SAVE,
+  UPDATE,
   _GROUP,
 } from '../constants'
 
@@ -10,6 +11,32 @@ export default (state = {}, action) => {
   const { type, data } = action
 
   switch (type) {
+    case CREATE + _GROUP: {
+      let newGroup = {
+        id: md5(new Date()),
+        title: data.title,
+        words: data.words,
+      }
+
+      return {
+        ...state,
+        groups: cloneGroups(state).concat(newGroup)
+      }
+    }
+
+    case UPDATE + _GROUP: {
+      let { id, title, words } = data
+      let clonedGroups = cloneGroups(state)
+      let currentGroup = clonedGroups.find(item => item.id === id)
+
+      Object.assign(currentGroup, {title, words})
+
+      return {
+        ...state,
+        groups: clonedGroups,
+      }
+    }
+
     case DELETE + _GROUP: {
       let { id } = data
       let clonedGroups = cloneGroups(state)
@@ -17,31 +44,6 @@ export default (state = {}, action) => {
       return {
         ...state,
         groups: clonedGroups.filter(item => item.id !== id),
-      }
-    }
-
-    case SAVE + _GROUP: {
-      let { id, title, words } = data
-      let clonedGroups = cloneGroups(state)
-
-      if (id) {
-        let currentGroup = clonedGroups.find(item => item.id === id)
-
-        Object.assign(currentGroup, {title, words})
-      }
-      else {
-        let newGroup = {
-          id: md5(new Date()),
-          title,
-          words,
-        }
-
-        clonedGroups = clonedGroups.concat(newGroup)
-      }
-
-      return {
-        ...state,
-        groups: clonedGroups,
       }
     }
 

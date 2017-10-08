@@ -1,8 +1,6 @@
 import {
-  ADD,
   CHANGE,
-  EDIT,
-  SAVE,
+  OPEN,
   _FORM,
   _GROUP,
   _FIELD,
@@ -12,16 +10,10 @@ export default (state = {}, action) => {
   const { type, data } = action
 
   switch (type) {
-    case ADD + _GROUP:
+    case OPEN + _GROUP + _FORM:
       return {
         ...state,
-        title: '',
-        words: '',
-      }
-
-    case EDIT + _GROUP:
-      return {
-        ...state,
+        id: data.id,
         title: data.title,
         words: data.words,
       }
@@ -30,13 +22,6 @@ export default (state = {}, action) => {
       return {
         ...state,
         [data.name]: data.value,
-      }
-
-    case SAVE + _GROUP:
-      return {
-        ...state,
-        title: '',
-        words: '',
       }
 
     default:

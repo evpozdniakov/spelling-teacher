@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { addGroup, editGroup, deleteGroup } from '../actions/dictionary'
+import { openGroupForm } from '../actions/internal'
+import { deleteGroup } from '../actions/dictionary'
 
 class Dictionary extends Component {
   curryUseGroup(id) {
@@ -9,13 +10,13 @@ class Dictionary extends Component {
 
   curryAddGroup() {
     return () => {
-      this.props.addGroupAction()
+      this.props.openGroupFormAction()
     }
   }
 
   curryEditGroup(id) {
     return () => {
-      this.props.editGroupAction(id)
+      this.props.openGroupFormAction(id)
     }
   }
 
@@ -77,7 +78,6 @@ export default connect(state => {
   const { internal, dictionary } = state
   return {internal, dictionary}
 }, {
-  addGroupAction: addGroup,
-  editGroupAction: editGroup,
   deleteGroupAction: deleteGroup,
+  openGroupFormAction: openGroupForm,
 })(Dictionary)

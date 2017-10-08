@@ -1,21 +1,26 @@
 import {
-  EDIT,
-  SAVE,
+  CREATE,
+  OPEN,
+  UPDATE,
+  _FORM,
   _GROUP,
 } from '../constants'
 
-import { handleEditGroup, handleSaveGroup } from './dictionary'
+import { handleEditGroup } from './dictionary'
+import { openMainPage } from '../actions/internal'
 
 export default store => next => action => {
   const { type } = action
 
   switch (type) {
-    case EDIT + _GROUP:
+    case OPEN + _GROUP + _FORM:
       handleEditGroup(store, next, action)
       break
 
-    case SAVE + _GROUP:
-      handleSaveGroup(store, next, action)
+    case CREATE + _GROUP:
+    case UPDATE + _GROUP:
+      next(action)
+      store.dispatch(openMainPage())
       break
 
     default:

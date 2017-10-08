@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { changeFormField } from '../actions/form'
-import { saveGroup } from '../actions/dictionary'
+import { createGroup, updateGroup } from '../actions/dictionary'
 import { openMainPage } from '../actions/internal'
 
 import '../style/Form.less'
@@ -32,11 +32,19 @@ class Form extends Component {
     }
   }
 
-  currySaveForm() {
+  curryCreateGroup() {
     return () => {
       const { title, words } = this.props.form
 
-      this.props.saveGroupAction(title, words)
+      this.props.createGroupAction(title, words)
+    }
+  }
+
+  curryUpdateGroup(id) {
+    return () => {
+      const { title, words } = this.props.form
+
+      this.props.updateGroupAction(id, title, words)
     }
   }
 
@@ -89,7 +97,8 @@ class Form extends Component {
     return (
       <div className="controls">
         {this.renderCancelButton()}
-        {this.renderSaveButton()}
+        {this.renderCreateButton()}
+        {this.renderUpdateButton()}
       </div>
     )
   }
@@ -102,13 +111,34 @@ class Form extends Component {
     return <button {...props}>Cancel</button>
   }
 
-  renderSaveButton() {
-    const props = {
-      disabled: this.isFormInvalid,
-      onClick: this.currySaveForm(),
+  renderCreateButton() {
+    const { id } = this.props.form
+
+    if (id) {
+      return null
     }
 
-    return <button {...props}>Save</button>
+    const props = {
+      disabled: this.isFormInvalid,
+      onClick: this.curryCreateGroup(),
+    }
+
+    return <button {...props}>Create</button>
+  }
+
+  renderUpdateButton() {
+    const { id } = this.props.form
+
+    if (!id) {
+      return null
+    }
+
+    const props = {
+      disabled: this.isFormInvalid,
+      onClick: this.curryUpdateGroup(id),
+    }
+
+    return <button {...props}>Update</button>
   }
 }
 
@@ -117,6 +147,7 @@ export default connect(state => {
   return {internal, form}
 }, {
   changeFormFieldAction: changeFormField,
-  saveGroupAction: saveGroup,
+  createGroupAction: createGroup,
+  updateGroupAction: updateGroup,
   openMainPageAction: openMainPage,
 })(Form)
