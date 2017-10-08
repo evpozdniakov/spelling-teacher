@@ -1,27 +1,21 @@
 import {
-  CHANGE,
   SAVE,
-  _FORM,
   _GROUP,
-  _FIELD,
 } from '../constants'
 
 export default (state={}, action) => {
   const { type, data } = action
 
   switch (type) {
-    case CHANGE + _FORM + _FIELD:
-      return {
-        ...state,
-        [data.name]: data.value,
-      }
+    case SAVE + _GROUP: {
+      let { title, words } = data
+      let group = {title, words}
 
-    case SAVE + _GROUP:
       return {
         ...state,
-        title: '',
-        words: '',
+        groups: cloneGroups(state).concat(group),
       }
+    }
 
     default:
       return state
@@ -30,16 +24,18 @@ export default (state={}, action) => {
 
 export function getInitState(data) {
   const {
-    title='',
-    words='',
+    groups=[],
   } = data || {}
 
   return {
-    title,
-    words,
+    groups,
   }
 }
 
 export function serializeState(data) {
   return data
+}
+
+function cloneGroups(state) {
+  return state.groups.map(item => ({...item}))
 }

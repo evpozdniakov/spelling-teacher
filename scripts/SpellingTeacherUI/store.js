@@ -3,15 +3,7 @@ import { createLogger } from 'redux-logger'
 
 import reducer from './reducers'
 
-import {
-  getInitState as getInternalInitState,
-  serializeState as serializeInternalState,
-} from './reducers/internal'
-
-import {
-  getInitState as getFormInitState,
-  serializeState as serializeFormState,
-} from './reducers/form'
+const reducerNames = ['internal', 'form', 'dictionary']
 
 import api from './middlewares/api'
 
@@ -35,21 +27,38 @@ function getMiddleware() {
   return applyMiddleware(api)
 }
 
-function deserialize(data) {
-  const {
-    internal={},
-    form={},
-  } = data || {}
+function deserialize(data={}) {
+  const reducerStates = reducerNames.map(reducerName => {
+    const { getInitState } = require(`./reducers/${reducerName}`)
+    const state = getInitState(data[reducerName] || {})
 
-  return {
-    internal: getInternalInitState(internal),
-    form: getFormInitState(form),
-  }
+    return {reducerName, state}
+  })
+
+  const state = reducerStates.reduce((res, item) => {
+    return {
+      ...res,
+      [item.reducerName]: item.state,
+    }
+  }, {})
+
+  return state
 }
 
 export function serializeAppState(state) {
-  return {
-    internal: serializeInternalState(state.internal),
-    form: serializeFormState(state.form),
-  }
+  const reducerData = reducerNames.map(reducerName => {
+    const { serializeState } = require(`./reducers/${reducerName}`)
+    const data = serializeState(state[reducerName])
+
+    return {reducerName, data}
+  })
+
+  const data = reducerData.reduce((res, item) => {
+    return {
+      ...res,
+      [item.reducerName]: item.data,
+    }
+  }, {})
+
+  return data
 }

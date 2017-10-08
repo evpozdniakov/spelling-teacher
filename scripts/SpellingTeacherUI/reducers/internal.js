@@ -1,5 +1,7 @@
 import {
+  SAVE,
   _FORM,
+  _GROUP,
   _TRAINING,
 } from '../constants'
 
@@ -7,6 +9,12 @@ export default (state={}, action) => {
   const { type, data } = action
 
   switch (type) {
+    case SAVE + _GROUP:
+      return {
+        ...state,
+        mode: _TRAINING,
+      }
+
     default:
       return state
   }

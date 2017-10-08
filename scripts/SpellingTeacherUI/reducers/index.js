@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
-import internal from './internal'
+import dictionary from './dictionary'
 import form from './form'
+import internal from './internal'
 
 export default combineReducers({
-  internal,
+  dictionary,
   form,
+  internal,
 })

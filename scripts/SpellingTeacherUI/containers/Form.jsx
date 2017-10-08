@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { changeFormField } from '../actions/form'
+import { saveGroup } from '../actions/dictionary'
 
 import '../style/Form.less'
 
@@ -9,9 +10,26 @@ import {
 } from '../constants'
 
 class Form extends Component {
+  get isFormInvalid() {
+    const {
+      title='',
+      words='',
+    } = this.props.form
+
+    return !title.trim() || !words.trim()
+  }
+
   curryChangeField(name) {
     return ev => {
       this.props.changeFormFieldAction(name, ev.target.value)
+    }
+  }
+
+  currySaveForm() {
+    return () => {
+      const { title, words } = this.props.form
+
+      this.props.saveGroupAction(title, words)
     }
   }
 
@@ -61,9 +79,14 @@ class Form extends Component {
   }
 
   renderSaveButton() {
+    const props = {
+      disabled: this.isFormInvalid,
+      onClick: this.currySaveForm(),
+    }
+
     return (
       <div>
-        <button onClick={() => {}}>Save</button>
+        <button {...props}>Save</button>
       </div>
     )
   }
@@ -74,4 +97,5 @@ export default connect(state => {
   return {internal, form}
 }, {
   changeFormFieldAction: changeFormField,
+  saveGroupAction: saveGroup,
 })(Form)
