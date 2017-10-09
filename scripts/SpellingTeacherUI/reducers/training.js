@@ -1,9 +1,18 @@
 import {
   CHANGE,
+  PICK,
+  SAY,
   START,
+
+  _RANDOM,
   _SPELLING,
+  _TEST,
   _TRAINING,
   _USER,
+  _WORD,
+
+  _STARTED,
+  _FINISHED,
 } from '../constants'
 
 export default (state = {}, action) => {
@@ -20,6 +29,25 @@ export default (state = {}, action) => {
       return {
         ...state,
         groupId: data.groupId,
+        userSpelling: '',
+      }
+
+    case PICK + _RANDOM + _WORD:
+      return {
+        ...state,
+        randomWord: data.randomWord,
+      }
+
+    case SAY + _TEST + _WORD + _STARTED:
+      return {
+        ...state,
+        isSpeaking: true,
+      }
+
+    case SAY + _TEST + _WORD + _FINISHED:
+      return {
+        ...state,
+        isSpeaking: false,
       }
 
     default:
@@ -31,14 +59,21 @@ export function getInitState(data) {
   const {
     userSpelling = '',
     groupId = null,
+    randomWord = {},
   } = data || {}
 
   return {
     userSpelling,
     groupId,
+    randomWord,
+    isSpeaking: false,
   }
 }
 
 export function serializeState(data) {
-  return data
+  const _data = {...data}
+
+  delete _data.isSpeaking
+
+  return _data
 }

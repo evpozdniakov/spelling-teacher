@@ -1,4 +1,12 @@
-import { createGroupStats, updateGroupStats } from '../actions/stats'
+import {
+  createGroupStats,
+  updateGroupStats,
+} from '../actions/stats'
+
+import {
+  pickRandomWord,
+  sayTestWord,
+} from '../actions/training'
 
 export function handleStartTraining(store, next, action) {
   const { groupId } = action.data
@@ -15,4 +23,7 @@ export function handleStartTraining(store, next, action) {
   }
 
   next(action)
+  store.dispatch(pickRandomWord())
+
+  store.dispatch(sayTestWord())
 }

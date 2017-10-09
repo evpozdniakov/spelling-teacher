@@ -88,9 +88,9 @@ class Training extends Component {
   }
 
   renderTestingWord() {
+    const { randomWord } = this.props.training
 
-
-    return <div className="testing-word">testingWord</div>
+    return <div className="testing-word">{randomWord.word}</div>
   }
 
   renderInputField() {
