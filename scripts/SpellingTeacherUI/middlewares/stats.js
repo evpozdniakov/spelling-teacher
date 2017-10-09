@@ -14,6 +14,7 @@ export function handleStartTraining(store, next, action) {
   const groupInStats = stats.groups.find(item => item.id === groupId)
   const dictionaryGroups = store.getState().dictionary.groups || []
   const dictionaryGroup = dictionaryGroups.find(item => item.id === groupId)
+  const wordsCount = groupInStats.words.length
 
   if (groupInStats) {
     store.dispatch(updateGroupStats(dictionaryGroup))
@@ -22,7 +23,13 @@ export function handleStartTraining(store, next, action) {
     store.dispatch(createGroupStats(dictionaryGroup))
   }
 
-  next(action)
+  next({
+    ...action,
+    data: {
+      ...action.data,
+      wordsCount,
+    }
+  })
   store.dispatch(pickRandomWord())
 
   store.dispatch(sayTestWord())

@@ -29,6 +29,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         groupId: data.groupId,
+        wordsCount: data.wordsCount,
         userSpelling: '',
       }
 
@@ -59,12 +60,14 @@ export function getInitState(data) {
   const {
     userSpelling = '',
     groupId = null,
+    wordsCount = 0,
     testingWord = {},
   } = data || {}
 
   return {
     userSpelling,
     groupId,
+    wordsCount,
     testingWord,
     isSpeaking: false,
   }

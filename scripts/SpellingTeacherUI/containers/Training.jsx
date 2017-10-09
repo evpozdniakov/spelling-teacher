@@ -6,6 +6,7 @@ import {
   changeUserSpelling,
   registerRightSpelling,
   registerWrongSpelling,
+  sayTestWord,
 } from '../actions/training'
 
 // import {
@@ -67,13 +68,19 @@ class Training extends Component {
     }
   }
 
+  currySayAgain() {
+    return () => {
+      this.props.sayTestWordAction()
+    }
+  }
+
   render() {
     return (
       <div className="training-ui">
         {this.renderBackButton()}
         {this.renderTitle()}
         {this.renderDictionaryInfo()}
-        {this.renderTestingWord()}
+        {this.renderSayAgainButton()}
         {this.renderInputField()}
       </div>
     )
@@ -96,18 +103,23 @@ class Training extends Component {
   }
 
   renderDictionaryInfo() {
-    const { title, words } = this.group
+    const { title } = this.group
+    const { wordsCount } = this.props.training
 
     return (
       <div className="dictionary-info">
-        <div className="name">{title}</div>
-        <div className="words-count">Words: {words.length}</div>
+        <div className="name">Group: {title}</div>
+        <div className="words-count">Words: {wordsCount}</div>
       </div>
     )
   }
 
-  renderTestingWord() {
-    return <div className="testing-word">{this.testingWord}</div>
+  renderSayAgainButton() {
+    return (
+      <div className="controls">
+        <button onClick={this.currySayAgain()}>Say again</button>
+      </div>
+    )
   }
 
   renderInputField() {
@@ -135,4 +147,5 @@ export default connect(state => {
   openMainPageAction: openMainPage,
   registerRightSpellingAction: registerRightSpelling,
   registerWrongSpellingAction: registerWrongSpelling,
+  sayTestWordAction: sayTestWord,
 })(Training)
