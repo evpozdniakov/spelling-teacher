@@ -21,19 +21,19 @@ export function handlePickWord(store, next, action) {
 
   const wordsWithMinTries = trainingGroupWords.filter(word => word.tries === minTriesValue)
   const randomIndex = Math.floor(Math.random() * wordsWithMinTries.length)
-  const randomWord = wordsWithMinTries[randomIndex]
+  const testingWord = wordsWithMinTries[randomIndex]
 
   next({
     ...action,
     data: {
       ...action.data,
-      randomWord,
+      testingWord,
     },
   })
 }
 
 export function handleSayWord(store, next, action) {
-  const { word } = store.getState().training.randomWord
+  const { word } = store.getState().training.testingWord
   const { type } = action
 
   const onstart = () => {

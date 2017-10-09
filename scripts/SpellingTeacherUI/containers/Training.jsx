@@ -23,11 +23,11 @@ class Training extends Component {
   }
 
   get testingWord() {
-    return this.props.training.randomWord.word
+    return this.props.training.testingWord.word
   }
 
   get testingWordId() {
-    return this.props.training.randomWord.id
+    return this.props.training.testingWord.id
   }
 
   curryChangeWord() {

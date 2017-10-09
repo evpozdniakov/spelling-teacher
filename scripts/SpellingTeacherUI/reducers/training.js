@@ -35,7 +35,7 @@ export default (state = {}, action) => {
     case PICK + _RANDOM + _WORD:
       return {
         ...state,
-        randomWord: data.randomWord,
+        testingWord: data.testingWord,
       }
 
     case SAY + _TEST + _WORD + _STARTED:
@@ -59,13 +59,13 @@ export function getInitState(data) {
   const {
     userSpelling = '',
     groupId = null,
-    randomWord = {},
+    testingWord = {},
   } = data || {}
 
   return {
     userSpelling,
     groupId,
-    randomWord,
+    testingWord,
     isSpeaking: false,
   }
 }
