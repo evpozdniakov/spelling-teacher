@@ -1,4 +1,4 @@
-import md5 from 'md5'
+import { getRandomHash } from 'lib/utils'
 
 import {
   CREATE,
@@ -13,7 +13,7 @@ export default (state = {}, action) => {
   switch (type) {
     case CREATE + _GROUP: {
       let newGroup = {
-        id: md5(new Date()),
+        id: getRandomHash(),
         title: data.title,
         words: data.words,
       }

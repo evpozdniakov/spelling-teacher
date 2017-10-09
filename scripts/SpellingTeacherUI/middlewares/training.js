@@ -1,7 +1,10 @@
 import {
+  _TRAINING,
   _STARTED,
   _FINISHED,
 } from '../constants'
+
+import { pickRandomWord, sayTestWord } from '../actions/training'
 
 export function handlePickWord(store, next, action) {
   const trainingGroupId = store.getState().training.groupId
@@ -48,6 +51,19 @@ export function handleSayWord(store, next, action) {
   }
 
   say(word, onstart, onend)
+}
+
+export function handleUserSpelling(store, next, action) {
+  next(action)
+
+  setTimeout(() => {
+    const { mode } = store.getState().internal
+
+    if (mode === _TRAINING) {
+      store.dispatch(pickRandomWord())
+      store.dispatch(sayTestWord())
+    }
+  }, 1000)
 }
 
 function say(text, onstart, onend) {

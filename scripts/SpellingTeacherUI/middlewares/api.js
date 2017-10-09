@@ -2,21 +2,29 @@ import {
   CREATE,
   OPEN,
   PICK,
+  REGISTER,
   SAY,
   START,
   UPDATE,
   _FORM,
   _GROUP,
   _RANDOM,
+  _RIGHT,
+  _SPELLING,
   _TEST,
   _TRAINING,
   _WORD,
+  _WRONG,
 } from '../constants'
 
 import { handleEditGroup } from './dictionary'
 import { handleStartTraining } from './stats'
-import { handlePickWord, handleSayWord } from './training'
 import { openMainPage } from '../actions/internal'
+import {
+  handlePickWord,
+  handleSayWord,
+  handleUserSpelling,
+} from './training'
 
 export default store => next => action => {
   const { type } = action
@@ -42,6 +50,11 @@ export default store => next => action => {
 
     case SAY + _TEST + _WORD:
       handleSayWord(store, next, action)
+      break
+
+    case REGISTER + _RIGHT + _SPELLING:
+    case REGISTER + _WRONG + _SPELLING:
+      handleUserSpelling(store, next, action)
       break
 
     default:

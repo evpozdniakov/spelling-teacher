@@ -61,12 +61,15 @@ module.exports = {
     publicPath: '/static/'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    alias: {
+      lib: path.resolve(__dirname, 'scripts/lib'),
+    },
+    extensions: ['.js', '.jsx']
   },
-  devtool: 'eval-source-map',
+  devtool: '',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(MODE),
@@ -75,15 +78,22 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loaders: ['babel'],
-        include: path.join(__dirname, 'scripts')
-      }, {
+        include: path.join(__dirname, 'scripts'),
+        use: {
+          loader: 'babel-loader'
+        }
+      },
+      {
         test: /\.less$/,
-        loaders: ['style-loader', 'css-loader', 'less-loader'],
-        include: path.join(__dirname, 'scripts')
+        include: path.join(__dirname, 'scripts'),
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'},
+          {loader: 'less-loader'},
+        ]
       }
     ]
   }

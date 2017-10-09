@@ -2,9 +2,13 @@ import md5 from 'md5'
 
 import {
   CREATE,
+  REGISTER,
   UPDATE,
   _GROUP,
+  _RIGHT,
+  _SPELLING,
   _STATS,
+  _WRONG,
 } from '../constants'
 
 export default (state = {}, action) => {
@@ -27,6 +31,33 @@ export default (state = {}, action) => {
       let currentGroup = clonedGroups.find(item => item.id === id)
 
       updateGroupStats(currentGroup, words)
+
+      return {
+        ...state,
+        groups: clonedGroups,
+      }
+    }
+
+    case REGISTER + _RIGHT + _SPELLING: {
+      let clonedGroups = cloneGroups(state)
+      let currentGroup = clonedGroups.find(item => item.id === data.groupId)
+      let currentWord = currentGroup.words.find(item => item.id === data.wordId)
+
+      currentWord.tries += 1
+
+      return {
+        ...state,
+        groups: clonedGroups,
+      }
+    }
+
+    case REGISTER + _WRONG + _SPELLING: {
+      let clonedGroups = cloneGroups(state)
+      let currentGroup = clonedGroups.find(item => item.id === data.groupId)
+      let currentWord = currentGroup.words.find(item => item.id === data.wordId)
+
+      currentWord.tries += 1
+      currentWord.fails += 1
 
       return {
         ...state,

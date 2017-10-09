@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../style/Training.less'
-import { changeUserSpelling } from '../actions/training'
 import { openMainPage } from '../actions/internal'
+import {
+  changeUserSpelling,
+  registerRightSpelling,
+  registerWrongSpelling,
+} from '../actions/training'
 
 // import {
 //   _FORM,
@@ -18,6 +22,14 @@ class Training extends Component {
     return group
   }
 
+  get testingWord() {
+    return this.props.training.randomWord.word
+  }
+
+  get testingWordId() {
+    return this.props.training.randomWord.id
+  }
+
   curryChangeWord() {
     return ev => {
       const string = ev.target.value
@@ -26,19 +38,26 @@ class Training extends Component {
     }
   }
 
-  curryCheckWord() {
+  curryCheckSpelling() {
     return ev => {
-      if (ev.keyCode !== 13) {
+      if (ev.charCode !== 13) {
         return
       }
 
-      const string = ev.target.value.trim()
+      const spelling = ev.target.value.trim()
 
-      if (!string) {
+      if (!spelling) {
         return
       }
 
-      console.log('--- check string:', string)
+      const { groupId } = this.props.training
+
+      if (spelling === this.testingWord) {
+        this.props.registerRightSpellingAction(groupId, this.testingWordId)
+      }
+      else {
+        this.props.registerWrongSpellingAction(groupId, this.testingWordId)
+      }
     }
   }
 
@@ -88,9 +107,7 @@ class Training extends Component {
   }
 
   renderTestingWord() {
-    const { randomWord } = this.props.training
-
-    return <div className="testing-word">{randomWord.word}</div>
+    return <div className="testing-word">{this.testingWord}</div>
   }
 
   renderInputField() {
@@ -99,7 +116,7 @@ class Training extends Component {
     const props = {
       value: userSpelling,
       onChange: this.curryChangeWord(),
-      onKeyPress: this.curryCheckWord(),
+      onKeyPress: this.curryCheckSpelling(),
     }
 
     return (
@@ -116,4 +133,6 @@ export default connect(state => {
 }, {
   changeUserSpellingAction: changeUserSpelling,
   openMainPageAction: openMainPage,
+  registerRightSpellingAction: registerRightSpelling,
+  registerWrongSpellingAction: registerWrongSpelling,
 })(Training)
