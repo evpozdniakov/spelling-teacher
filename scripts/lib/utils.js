@@ -1,4 +1,4 @@
-/* eslint global-require: "off" */
+/* eslint global-require: "off", no-console: "off" */
 
 export function getRandomHash(length = 10) {
   const md5 = require('md5')
@@ -6,4 +6,8 @@ export function getRandomHash(length = 10) {
   const hash = md5(now)
 
   return hash.substr(0, length)
+}
+
+export function logError(err) {
+  console.error(err)
 }

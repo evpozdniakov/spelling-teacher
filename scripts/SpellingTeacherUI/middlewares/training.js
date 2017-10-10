@@ -1,3 +1,7 @@
+/* eslint promise/always-return: "off" */
+
+import { logError } from 'lib/utils'
+
 import {
   _TRAINING,
   _STARTED,
@@ -87,22 +91,41 @@ function say(text, onstart, onend) {
     throw new Error('speechSynthesis not supported')
   }
 
-  const utterance = getBaseUtterance()
+  getBaseUtterance()
+    .then(utterance => {
+      Object.assign(utterance, {
+        text,
+        onstart,
+        onend,
+      })
 
-  Object.assign(utterance, {
-    text,
-    onstart,
-    onend,
-  })
-
-  speechSynthesis.speak(utterance)
+      speechSynthesis.speak(utterance)
+    })
+    .catch(logError)
 }
 
 function getBaseUtterance() {
-  const utterance = new SpeechSynthesisUtterance()
-  const enUSVoice = speechSynthesis.getVoices().find(item => item.lang === 'fr-CA')
+  return promiseGetVoices()
+    .then(voices => {
+      const utterance = new SpeechSynthesisUtterance()
+      const voice = voices.find(item => item.lang === 'fr-CA')
 
-  Object.assign(utterance, {voice: enUSVoice})
+      Object.assign(utterance, {voice})
 
-  return utterance
+      return utterance
+    })
+}
+
+function promiseGetVoices() {
+  return new Promise(resolve => {
+    speechSynthesis.onvoiceschanged = () => {
+      resolve(speechSynthesis.getVoices())
+    }
+
+    const voices = speechSynthesis.getVoices()
+
+    if (voices.length) {
+      resolve(voices)
+    }
+  })
 }
