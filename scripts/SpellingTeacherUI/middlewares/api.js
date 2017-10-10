@@ -1,20 +1,19 @@
 import {
+  CHECK,
   CREATE,
   OPEN,
   PICK,
-  REGISTER,
   SAY,
   START,
   UPDATE,
   _FORM,
   _GROUP,
   _RANDOM,
-  _RIGHT,
   _SPELLING,
   _TEST,
   _TRAINING,
+  _USER,
   _WORD,
-  _WRONG,
 } from '../constants'
 
 import { handleEditGroup } from './dictionary'
@@ -52,8 +51,7 @@ export default store => next => action => {
       handleSayWord(store, next, action)
       break
 
-    case REGISTER + _RIGHT + _SPELLING:
-    case REGISTER + _WRONG + _SPELLING:
+    case CHECK + _USER + _SPELLING:
       handleUserSpelling(store, next, action)
       break
 

@@ -1,4 +1,5 @@
 export const CHANGE = 'CHANGE'
+export const CHECK = 'CHECK'
 export const CREATE = 'CREATE'
 export const DELETE = 'DELETE'
 export const OPEN = 'OPEN'

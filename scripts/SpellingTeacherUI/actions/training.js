@@ -1,5 +1,6 @@
 import {
   CHANGE,
+  CHECK,
   PICK,
   REGISTER,
   START,
@@ -18,6 +19,13 @@ export function changeUserSpelling(string) {
   return {
     type: CHANGE + _USER + _SPELLING,
     data: {string},
+  }
+}
+
+export function checkUserSpelling(spelling) {
+  return {
+    type: CHECK + _USER + _SPELLING,
+    data: {spelling},
   }
 }
 

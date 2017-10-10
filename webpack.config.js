@@ -47,24 +47,31 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const MODE = process.env.NODE_ENV || 'development';
+const { NODE_ENV } = process.env
+const MODE = NODE_ENV || 'development';
+const PROD_MODE = MODE === 'production';
+const DEV_MODE = !PROD_MODE;
+
+console.log(`\nWebpack started in ${NODE_ENV} mode.`);
+
+const entry = ['./scripts/index'];
+
+if (DEV_MODE) {
+  entry.push('webpack-dev-server/client?http://localhost:5000', 'webpack/hot/dev-server');
+}
 
 module.exports = {
-  entry: [
-    'webpack-dev-server/client?http://localhost:5000',
-    'webpack/hot/dev-server',
-    './scripts/index'
-  ],
+  entry,
   output: {
-    path: __dirname,
-    filename: 'bundle.js',
-    publicPath: '/static/'
+    path: DEV_MODE ? __dirname : path.resolve(__dirname, './dist'),
+    filename: DEV_MODE ? 'bundle.js' : 'bundle-prod.js',
+    publicPath: '/static/',
   },
   resolve: {
     alias: {
       lib: path.resolve(__dirname, 'scripts/lib'),
     },
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   devtool: '',
   plugins: [
@@ -75,7 +82,11 @@ module.exports = {
         NODE_ENV: JSON.stringify(MODE),
       },
       NODE_ENV: JSON.stringify(MODE),
-    })
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: PROD_MODE,
+      debug: DEV_MODE,
+    }),
   ],
   module: {
     rules: [
@@ -98,3 +109,24 @@ module.exports = {
     ]
   }
 };
+
+if (PROD_MODE) {
+  const CompressionPlugin = require('compression-webpack-plugin');
+  const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+
+  module.exports.plugins.push(
+    new UglifyJSPlugin({
+      sourceMap: false,
+      extractComments: true,
+      uglifyOptions: {
+        ie8: false,
+        ecma: 8,
+        warnings: true,
+      }
+    }),
+    new CompressionPlugin({
+      regExp: /\.js$/,
+      minRatio: 0.9,
+    }),
+  );
+}

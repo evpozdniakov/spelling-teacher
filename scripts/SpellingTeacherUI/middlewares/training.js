@@ -4,7 +4,12 @@ import {
   _FINISHED,
 } from '../constants'
 
-import { pickRandomWord, sayTestWord } from '../actions/training'
+import {
+  pickRandomWord,
+  sayTestWord,
+  registerRightSpelling,
+  registerWrongSpelling,
+} from '../actions/training'
 
 export function handlePickWord(store, next, action) {
   const trainingGroupId = store.getState().training.groupId
@@ -54,7 +59,18 @@ export function handleSayWord(store, next, action) {
 }
 
 export function handleUserSpelling(store, next, action) {
+  const { spelling } = action.data
+
   next(action)
+
+  const { groupId, testingWord } = store.getState().training
+
+  if (spelling === testingWord.word) {
+    store.dispatch(registerRightSpelling(groupId, testingWord.id))
+  }
+  else {
+    store.dispatch(registerWrongSpelling(groupId, testingWord.id))
+  }
 
   setTimeout(() => {
     const { mode } = store.getState().internal
@@ -63,7 +79,7 @@ export function handleUserSpelling(store, next, action) {
       store.dispatch(pickRandomWord())
       store.dispatch(sayTestWord())
     }
-  }, 1000)
+  }, 500)
 }
 
 function say(text, onstart, onend) {
@@ -84,7 +100,7 @@ function say(text, onstart, onend) {
 
 function getBaseUtterance() {
   const utterance = new SpeechSynthesisUtterance()
-  const enUSVoice = speechSynthesis.getVoices().find(item => item.lang === 'en-US')
+  const enUSVoice = speechSynthesis.getVoices().find(item => item.lang === 'fr-CA')
 
   Object.assign(utterance, {voice: enUSVoice})
 

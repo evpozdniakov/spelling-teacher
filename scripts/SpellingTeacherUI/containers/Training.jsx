@@ -4,8 +4,7 @@ import '../style/Training.less'
 import { openMainPage } from '../actions/internal'
 import {
   changeUserSpelling,
-  registerRightSpelling,
-  registerWrongSpelling,
+  checkUserSpelling,
   sayTestWord,
 } from '../actions/training'
 
@@ -51,14 +50,7 @@ class Training extends Component {
         return
       }
 
-      const { groupId } = this.props.training
-
-      if (spelling === this.testingWord) {
-        this.props.registerRightSpellingAction(groupId, this.testingWordId)
-      }
-      else {
-        this.props.registerWrongSpellingAction(groupId, this.testingWordId)
-      }
+      this.props.checkUserSpellingAction(spelling)
     }
   }
 
@@ -82,6 +74,7 @@ class Training extends Component {
         {this.renderDictionaryInfo()}
         {this.renderSayAgainButton()}
         {this.renderInputField()}
+        {this.renderSpellingHistory()}
       </div>
     )
   }
@@ -137,6 +130,34 @@ class Training extends Component {
       </div>
     )
   }
+
+  renderSpellingHistory() {
+    const { history } = this.props.training
+
+    if (!history.length) {
+      return null
+    }
+
+    return (
+      <div className="spelling-history">
+        <ol>
+          {history.map(this.renderHistoryItem.bind(this))}
+        </ol>
+      </div>
+    )
+  }
+
+  renderHistoryItem(item, index) {
+    const className = item.isRight ? 'is-right' : 'is-wrong'
+
+    return (
+      <li key={index} className={className}>
+        <span className="user-spelling">{item.spelling}</span>
+        <span className="icon">{item.isRight ? '✔' : ''}</span>
+        <span className="right-spelling">{item.isRight ? '' : item.rightSpelling}</span>
+      </li>
+    )
+  }
 }
 
 export default connect(state => {
@@ -145,7 +166,6 @@ export default connect(state => {
 }, {
   changeUserSpellingAction: changeUserSpelling,
   openMainPageAction: openMainPage,
-  registerRightSpellingAction: registerRightSpelling,
-  registerWrongSpellingAction: registerWrongSpelling,
   sayTestWordAction: sayTestWord,
+  checkUserSpellingAction: checkUserSpelling,
 })(Training)

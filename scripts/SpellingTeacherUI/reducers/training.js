@@ -1,15 +1,19 @@
 import {
+  CHECK,
   CHANGE,
   PICK,
+  REGISTER,
   SAY,
   START,
 
   _RANDOM,
+  _RIGHT,
   _SPELLING,
   _TEST,
   _TRAINING,
   _USER,
   _WORD,
+  _WRONG,
 
   _STARTED,
   _FINISHED,
@@ -29,6 +33,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         groupId: data.groupId,
+        history: [],
         wordsCount: data.wordsCount,
         userSpelling: '',
       }
@@ -51,6 +56,39 @@ export default (state = {}, action) => {
         isSpeaking: false,
       }
 
+    case CHECK + _USER + _SPELLING:
+      return {
+        ...state,
+        history: state.history.concat({spelling: data.spelling}),
+        userSpelling: '',
+      }
+
+    case REGISTER + _WRONG + _SPELLING: {
+      let { history } = state
+      let lastItem = history[history.length - 1]
+      let { word } = state.testingWord
+
+      lastItem.isRight = false
+      lastItem.rightSpelling = word
+
+      return {
+        ...state,
+        history
+      }
+    }
+
+    case REGISTER + _RIGHT + _SPELLING: {
+      let { history } = state
+      let lastItem = history[history.length - 1]
+
+      lastItem.isRight = true
+
+      return {
+        ...state,
+        history
+      }
+    }
+
     default:
       return state
   }
@@ -58,18 +96,21 @@ export default (state = {}, action) => {
 
 export function getInitState(data) {
   const {
-    userSpelling = '',
     groupId = null,
-    wordsCount = 0,
+    history = [],
+    // isSpeaking skipped
     testingWord = {},
+    userSpelling = '',
+    wordsCount = 0,
   } = data || {}
 
   return {
-    userSpelling,
     groupId,
-    wordsCount,
-    testingWord,
+    history,
     isSpeaking: false,
+    testingWord,
+    userSpelling,
+    wordsCount,
   }
 }
 

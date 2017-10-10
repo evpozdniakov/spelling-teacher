@@ -10,11 +10,9 @@ import {
 
 export function handleStartTraining(store, next, action) {
   const { groupId } = action.data
-  const { stats } = store.getState()
-  const groupInStats = stats.groups.find(item => item.id === groupId)
+  const groupInStats = findGroupInStatsById(store, groupId)
   const dictionaryGroups = store.getState().dictionary.groups || []
   const dictionaryGroup = dictionaryGroups.find(item => item.id === groupId)
-  const wordsCount = groupInStats.words.length
 
   if (groupInStats) {
     store.dispatch(updateGroupStats(dictionaryGroup))
@@ -22,6 +20,9 @@ export function handleStartTraining(store, next, action) {
   else {
     store.dispatch(createGroupStats(dictionaryGroup))
   }
+
+  const { words } = findGroupInStatsById(store, groupId)
+  const wordsCount = words.length
 
   next({
     ...action,
@@ -33,4 +34,8 @@ export function handleStartTraining(store, next, action) {
   store.dispatch(pickRandomWord())
 
   store.dispatch(sayTestWord())
+}
+
+function findGroupInStatsById(store, id) {
+  return store.getState().stats.groups.find(item => item.id === id)
 }
