@@ -22,7 +22,7 @@ export function handleStartTraining(store, next, action) {
   }
 
   const { words } = findGroupInStatsById(store, groupId)
-  const wordsCount = words.length
+  const wordsCount = words.filter(item => item.isActive).length
 
   next({
     ...action,

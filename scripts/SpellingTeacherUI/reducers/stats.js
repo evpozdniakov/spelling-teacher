@@ -120,6 +120,7 @@ function parseWords(wordText) {
       return {
         id: md5(word),
         word,
+        isActive: true,
         tries: 0,
         fails: 0,
       }
@@ -128,15 +129,18 @@ function parseWords(wordText) {
 
 function updateGroupStats(group, wordText) {
   const { words } = group
-  const wordIds = words.map(item => item.id)
+  const existingWordIds = words.map(item => item.id)
+  const newWordIds = []
 
   wordText.split(',')
     .forEach(string => {
       const word = string.trim()
       const id = md5(word)
 
-      if (!wordIds.includes(id)) {
-        words.concat({
+      newWordIds.push(id)
+
+      if (!existingWordIds.includes(id)) {
+        words.push({
           id,
           word,
           tries: 0,
@@ -144,6 +148,12 @@ function updateGroupStats(group, wordText) {
         })
       }
     })
+
+  words.forEach(item => {
+    Object.assign(item, {
+      isActive: newWordIds.includes(item.id)
+    })
+  })
 
   Object.assign(group, {words})
 }

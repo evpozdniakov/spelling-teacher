@@ -18,7 +18,7 @@ import {
 export function handlePickWord(store, next, action) {
   const trainingGroupId = store.getState().training.groupId
   const trainingGroup = store.getState().stats.groups.find(item => item.id === trainingGroupId)
-  const trainingGroupWords = trainingGroup.words
+  const trainingGroupWords = trainingGroup.words.filter(item => item.isActive)
 
   const minTriesValue = trainingGroupWords.reduce((res, word) => {
     if (res === null) {
