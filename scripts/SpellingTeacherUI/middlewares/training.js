@@ -108,7 +108,7 @@ function getBaseUtterance() {
   return promiseGetVoices()
     .then(voices => {
       const utterance = new SpeechSynthesisUtterance()
-      const voice = voices.find(item => item.lang === 'fr-CA')
+      const voice = voices.find(item => item.lang === 'fr-FR')
 
       Object.assign(utterance, {voice})
 
