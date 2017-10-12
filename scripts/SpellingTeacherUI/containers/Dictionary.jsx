@@ -46,7 +46,7 @@ class Dictionary extends Component {
   renderAddButton() {
     return (
       <div className="controls">
-        <button onClick={this.curryAddGroup()}>Add words</button>
+        <button className="btn btn-primary" onClick={this.curryAddGroup()}>Add words</button>
       </div>
     )
   }

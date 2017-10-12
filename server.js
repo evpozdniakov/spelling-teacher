@@ -2,9 +2,11 @@
 
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
+const path = require('path');
 const config = require('./webpack.config');
 
 new WebpackDevServer(webpack(config), {
+  contentBase: path.resolve(__dirname, './public'),
   publicPath: config.output.publicPath,
   hot: true,
   historyApiFallback: true
