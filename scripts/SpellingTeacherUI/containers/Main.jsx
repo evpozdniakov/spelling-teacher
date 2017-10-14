@@ -33,11 +33,20 @@ class Main extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
+        {this.renderNavigation()}
         {this.renderMainMenu()}
         {this.renderForm()}
         {this.renderTrainingUI()}
       </div>
+    )
+  }
+
+  renderNavigation() {
+    return (
+      <nav className="navbar navbar-light mb-4" style={{backgroundColor: '#eee'}}>
+        <span className="navbar-text">asdf</span>
+      </nav>
     )
   }
 

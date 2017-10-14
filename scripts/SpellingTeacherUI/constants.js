@@ -31,3 +31,10 @@ export const FORM_FIELDS = {
   TITLE: 'title',
   WORDS: 'words',
 }
+
+export const CHAR_CODE = {
+  ENTER: 13,
+  SPACE: 32,
+}
+
+console.log('--- ')

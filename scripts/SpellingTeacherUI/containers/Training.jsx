@@ -8,10 +8,9 @@ import {
   sayTestWord,
 } from '../actions/training'
 
-// import {
-//   _FORM,
-//   _TRAINING,
-// } from '../constants'
+import {
+  CHAR_CODE,
+} from '../constants'
 
 class Training extends Component {
   get group() {
@@ -30,27 +29,29 @@ class Training extends Component {
     return this.props.training.testingWord.id
   }
 
-  curryChangeWord() {
+  curryChangeText() {
     return ev => {
-      const string = ev.target.value
+      const string = ev.target.value.trim()
 
       this.props.changeUserSpellingAction(string)
     }
   }
 
-  curryCheckSpelling() {
+  curryKeyPress() {
     return ev => {
-      if (ev.charCode !== 13) {
+      if (![CHAR_CODE.ENTER, CHAR_CODE.SPACE].includes(ev.charCode)) {
         return
       }
 
       const spelling = ev.target.value.trim()
 
       if (!spelling) {
+        this.props.sayTestWordAction()
         return
       }
-
-      this.props.checkUserSpellingAction(spelling)
+      else if (ev.charCode === CHAR_CODE.ENTER) {
+        this.props.checkUserSpellingAction(spelling)
+      }
     }
   }
 
@@ -60,9 +61,10 @@ class Training extends Component {
     }
   }
 
-  currySayAgain() {
+  currySayAgainButtonClick() {
     return () => {
       this.props.sayTestWordAction()
+      this.refs.inputField.focus()
     }
   }
 
@@ -110,7 +112,7 @@ class Training extends Component {
   renderSayAgainButton() {
     return (
       <div className="controls">
-        <button onClick={this.currySayAgain()}>Say again</button>
+        <button onClick={this.currySayAgainButtonClick()}>Say again</button>
       </div>
     )
   }
@@ -120,13 +122,13 @@ class Training extends Component {
 
     const props = {
       value: userSpelling,
-      onChange: this.curryChangeWord(),
-      onKeyPress: this.curryCheckSpelling(),
+      onChange: this.curryChangeText(),
+      onKeyPress: this.curryKeyPress(),
     }
 
     return (
       <div className="input-field-box">
-        <input {...props} />
+        <input ref="inputField" {...props} />
       </div>
     )
   }

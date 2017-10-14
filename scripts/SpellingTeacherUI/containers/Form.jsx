@@ -50,7 +50,7 @@ class Form extends Component {
 
   render() {
     return (
-      <div>
+      <div className="entry-form">
         {this.renderGroupTitleField()}
         {this.renderGroupWordsField()}
         {this.renderControls()}
@@ -66,7 +66,7 @@ class Form extends Component {
       onChange: this.curryChangeField(FORM_FIELDS.TITLE),
     }
 
-    const input = <input {...props} />
+    const input = <input className="form-control" {...props} />
 
     return this.renderFieldPair('Title', input)
   }
@@ -79,26 +79,31 @@ class Form extends Component {
       onChange: this.curryChangeField(FORM_FIELDS.WORDS),
     }
 
-    const textarea = <textarea {...props} />
+    const textarea = <textarea className="form-control words-textarea" {...props} />
 
     return this.renderFieldPair('Words (comma separated)', textarea)
   }
 
   renderFieldPair(title, field) {
     return (
-      <div className="field-pair">
-        <label>{title}</label>
-        <div className="field">{field}</div>
+      <div className="form-group row">
+        <label className="col-form-label col-md-3">{title}</label>
+        <div className="col-md-9">
+          {field}
+        </div>
       </div>
     )
   }
 
   renderControls() {
     return (
-      <div className="controls">
-        {this.renderCancelButton()}
-        {this.renderCreateButton()}
-        {this.renderUpdateButton()}
+      <div className="row">
+        <div className="col-md-3"></div>
+        <div className="col-md-9">
+          {this.renderCancelButton()}
+          {this.renderCreateButton()}
+          {this.renderUpdateButton()}
+        </div>
       </div>
     )
   }
@@ -108,7 +113,7 @@ class Form extends Component {
       onClick: this.curryCancelEditing(),
     }
 
-    return <button {...props}>Cancel</button>
+    return <button className="btn btn-outline-secondary mr-3" {...props}>Cancel</button>
   }
 
   renderCreateButton() {
@@ -123,7 +128,7 @@ class Form extends Component {
       onClick: this.curryCreateGroup(),
     }
 
-    return <button {...props}>Create</button>
+    return <button className="btn btn-primary" {...props}>Create</button>
   }
 
   renderUpdateButton() {
@@ -138,7 +143,7 @@ class Form extends Component {
       onClick: this.curryUpdateGroup(id),
     }
 
-    return <button {...props}>Update</button>
+    return <button className="btn btn-primary" {...props}>Update</button>
   }
 }
 
