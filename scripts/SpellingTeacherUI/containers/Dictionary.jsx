@@ -61,7 +61,7 @@ class Dictionary extends Component {
     return (
       <div key={id} className="group">
         <h3 className="title">
-          <a href="javascript:;" onClick={this.curryStartTraining(id)}>{title}</a>
+          <a href="#" onClick={this.curryStartTraining(id)}>{title}</a>
         </h3>
 
         <div className="controls">

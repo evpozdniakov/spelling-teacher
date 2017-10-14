@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "cross-env BABEL_ENV=production ./node_modules/.bin/webpack --config webpack.config.production.js",
-    "lint": "eslint --cache --ignore-path .gitignore --format=node_modules/eslint-formatter-pretty . *.js",
+    "lint": "eslint --cache --ignore-path .eslintignore --format=node_modules/eslint-formatter-pretty --ext .jsx --ext .js .",
     "dist": "NODE_ENV=production webpack --progress",
     "test": "npm run lint"
   },
@@ -44,6 +44,7 @@
     "eslint-plugin-react": "^7.4.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
+    "prop-types": "^15.6.0",
     "react-redux": "^5.0.6",
     "react-transform-hmr": "^1.0.4",
     "redux": "^3.7.2",
