@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Navbar from './Navbar'
 import Dictionary from './Dictionary'
 import Form from './Form'
 import Training from './Training'
-import '../style/Form.less'
+import '../style/Main.less'
 
 import {
+  _DICTIONARY,
   _FORM,
-  _MAIN,
-  _PAGE,
   _TRAINING,
 } from '../constants'
 
@@ -25,33 +25,25 @@ class Main extends Component {
     return mode === _TRAINING
   }
 
-  get isMainPageMode() {
+  get isDictionaryMode() {
     const { mode } = this.props.internal
 
-    return mode === _MAIN + _PAGE
+    return mode === _DICTIONARY
   }
 
   render() {
     return (
       <div className="container">
-        {this.renderNavigation()}
-        {this.renderMainMenu()}
+        <Navbar />
+        {this.renderDictionary()}
         {this.renderForm()}
         {this.renderTrainingUI()}
       </div>
     )
   }
 
-  renderNavigation() {
-    return (
-      <nav className="navbar navbar-light mb-4" style={{backgroundColor: '#eee'}}>
-        <span className="navbar-text">asdf</span>
-      </nav>
-    )
-  }
-
-  renderMainMenu() {
-    if (!this.isMainPageMode) {
+  renderDictionary() {
+    if (!this.isDictionaryMode) {
       return null
     }
 

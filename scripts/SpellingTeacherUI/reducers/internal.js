@@ -1,6 +1,7 @@
 import {
   OPEN,
   START,
+  _DICTIONARY,
   _FORM,
   _GROUP,
   _MAIN,
@@ -19,10 +20,10 @@ export default (state = {}, action) => {
         groupId: data.groupId,
       }
 
-    case OPEN + _MAIN + _PAGE:
+    case OPEN + _DICTIONARY:
       return {
         ...state,
-        mode: _MAIN + _PAGE,
+        mode: _DICTIONARY,
       }
 
     case START + _TRAINING:
@@ -37,10 +38,14 @@ export default (state = {}, action) => {
 }
 
 export function getInitState(data) {
-  const {
+  var {
     mode = _FORM,
     groupId = null,
   } = data || {}
+
+  if (mode === _MAIN + _PAGE) {
+    mode = _DICTIONARY
+  }
 
   return {
     mode,

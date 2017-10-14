@@ -9,6 +9,7 @@ export const SAY = 'SAY'
 export const START = 'START'
 export const UPDATE = 'UPDATE'
 
+export const _DICTIONARY = '_DICTIONARY'
 export const _FIELD = '_FIELD'
 export const _FORM = '_FORM'
 export const _GROUP = '_GROUP'

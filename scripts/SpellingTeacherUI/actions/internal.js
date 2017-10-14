@@ -2,13 +2,12 @@ import {
   OPEN,
   _GROUP,
   _FORM,
-  _MAIN,
-  _PAGE,
+  _DICTIONARY,
 } from '../constants'
 
-export function openMainPage() {
+export function openDictionary() {
   return {
-    type: OPEN + _MAIN + _PAGE,
+    type: OPEN + _DICTIONARY,
     data: {},
   }
 }

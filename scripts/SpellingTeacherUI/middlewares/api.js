@@ -18,7 +18,7 @@ import {
 
 import { handleEditGroup } from './dictionary'
 import { handleStartTraining } from './stats'
-import { openMainPage } from '../actions/internal'
+import { openDictionary } from '../actions/internal'
 import {
   handlePickWord,
   handleSayWord,
@@ -40,7 +40,7 @@ export default store => next => action => {
     case CREATE + _GROUP:
     case UPDATE + _GROUP:
       next(action)
-      store.dispatch(openMainPage())
+      store.dispatch(openDictionary())
       break
 
     case PICK + _RANDOM + _WORD:

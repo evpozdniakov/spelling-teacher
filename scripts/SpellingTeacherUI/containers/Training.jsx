@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../style/Training.less'
-import { openMainPage } from '../actions/internal'
 import {
   changeUserSpelling,
   checkUserSpelling,
@@ -55,12 +54,6 @@ class Training extends Component {
     }
   }
 
-  curryBackButtonClick() {
-    return () => {
-      this.props.openMainPageAction()
-    }
-  }
-
   currySayAgainButtonClick() {
     return () => {
       this.props.sayTestWordAction()
@@ -71,24 +64,11 @@ class Training extends Component {
   render() {
     return (
       <div className="training-ui">
-        {this.renderBackButton()}
         {this.renderTitle()}
         {this.renderDictionaryInfo()}
         {this.renderSayAgainButton()}
         {this.renderInputField()}
         {this.renderSpellingHistory()}
-      </div>
-    )
-  }
-
-  renderBackButton() {
-    const props = {
-      onClick: this.curryBackButtonClick()
-    }
-
-    return (
-      <div className="controls">
-        <button {...props}>⇦</button>
       </div>
     )
   }
@@ -169,7 +149,6 @@ export default connect(state => {
   return {dictionary, training}
 }, {
   changeUserSpellingAction: changeUserSpelling,
-  openMainPageAction: openMainPage,
   sayTestWordAction: sayTestWord,
   checkUserSpellingAction: checkUserSpelling,
 })(Training)

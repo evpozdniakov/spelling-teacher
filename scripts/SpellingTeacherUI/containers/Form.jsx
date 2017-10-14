@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { changeFormField } from '../actions/form'
 import { createGroup, updateGroup } from '../actions/dictionary'
-import { openMainPage } from '../actions/internal'
+import { openDictionary } from '../actions/internal'
 
 import '../style/Form.less'
 
@@ -28,7 +28,7 @@ class Form extends Component {
 
   curryCancelEditing() {
     return () => {
-      this.props.openMainPageAction()
+      this.props.openDictionaryAction()
     }
   }
 
@@ -154,5 +154,5 @@ export default connect(state => {
   changeFormFieldAction: changeFormField,
   createGroupAction: createGroup,
   updateGroupAction: updateGroup,
-  openMainPageAction: openMainPage,
+  openDictionaryAction: openDictionary,
 })(Form)
