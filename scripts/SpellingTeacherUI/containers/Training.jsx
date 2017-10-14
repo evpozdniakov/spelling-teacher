@@ -121,6 +121,8 @@ class Training extends Component {
     const { userSpelling } = this.props.training
 
     const props = {
+      ref: 'inputField',
+      spellCheck: false,
       value: userSpelling,
       onChange: this.curryChangeText(),
       onKeyPress: this.curryKeyPress(),
@@ -128,7 +130,7 @@ class Training extends Component {
 
     return (
       <div className="input-field-box">
-        <input ref="inputField" {...props} />
+        <input {...props} />
       </div>
     )
   }
