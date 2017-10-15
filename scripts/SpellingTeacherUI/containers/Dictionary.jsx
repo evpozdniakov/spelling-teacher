@@ -8,9 +8,8 @@ import '../style/Dictionary.less'
 
 class Dictionary extends Component {
   curryStartTraining(id) {
-    return ev => {
+    return () => {
       this.props.startTrainingAction(id)
-      ev.stopPropagation()
     }
   }
 
@@ -82,7 +81,7 @@ class Dictionary extends Component {
     const { id, title } = group
 
     return (
-      <tr key={id} onClick={this.curryStartTraining(id)}>
+      <tr key={id}>
         <td>
           {title}
         </td>
