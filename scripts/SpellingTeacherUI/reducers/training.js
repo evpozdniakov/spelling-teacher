@@ -68,8 +68,12 @@ export default (state = {}, action) => {
       let lastItem = history[history.length - 1]
       let { word } = state.testingWord
 
-      lastItem.isRight = false
-      lastItem.rightSpelling = word
+      Object.assign(lastItem, {
+        isRight: false,
+        rightSpelling: word,
+        tries: data.tries,
+        fails: data.fails,
+      })
 
       return {
         ...state,
@@ -81,7 +85,11 @@ export default (state = {}, action) => {
       let { history } = state
       let lastItem = history[history.length - 1]
 
-      lastItem.isRight = true
+      Object.assign(lastItem, {
+        isRight: true,
+        tries: data.tries,
+        fails: data.fails,
+      })
 
       return {
         ...state,

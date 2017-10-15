@@ -29,17 +29,17 @@ export function checkUserSpelling(spelling) {
   }
 }
 
-export function registerRightSpelling(groupId, wordId) {
+export function registerRightSpelling(groupId, wordId, tries, fails) {
   return {
     type: REGISTER + _RIGHT + _SPELLING,
-    data: {groupId, wordId},
+    data: {groupId, wordId, tries, fails},
   }
 }
 
-export function registerWrongSpelling(groupId, wordId) {
+export function registerWrongSpelling(groupId, wordId, tries, fails) {
   return {
     type: REGISTER + _WRONG + _SPELLING,
-    data: {groupId, wordId},
+    data: {groupId, wordId, tries, fails},
   }
 }
 

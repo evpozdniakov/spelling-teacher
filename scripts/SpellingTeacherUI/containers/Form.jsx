@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { changeFormField } from '../actions/form'
 import { createGroup, updateGroup } from '../actions/dictionary'
 import { openDictionary } from '../actions/internal'
+import Header from '../components/Header'
 
 import '../style/Form.less'
 
@@ -51,10 +52,25 @@ class Form extends Component {
   render() {
     return (
       <div className="entry-form">
+        {this.renderHeader()}
         {this.renderGroupTitleField()}
         {this.renderGroupWordsField()}
         {this.renderControls()}
       </div>
+    )
+  }
+
+  renderHeader() {
+    const { title } = this.props.form
+
+    const pageTitle = title || 'New group';
+
+    return (
+      <Header>
+        <h1>
+          {pageTitle}
+        </h1>
+      </Header>
     )
   }
 
@@ -68,7 +84,7 @@ class Form extends Component {
 
     const input = <input className="form-control" {...props} />
 
-    return this.renderFieldPair('Title', input)
+    return this.renderFieldPair('Group title', input)
   }
 
   renderGroupWordsField() {

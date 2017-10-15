@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Header from '../components/Header'
 import '../style/Training.less'
 import {
   changeUserSpelling,
@@ -12,6 +13,17 @@ import {
 } from '../constants'
 
 class Training extends Component {
+  componentDidUpdate(prevProps) {
+    const { isSpeaking } = this.props.training
+    const { isSpeaking: isSpeakingPrev } = prevProps.training
+
+    if (isSpeakingPrev === true) {
+      if (isSpeaking === false) {
+        this.refs.inputField.focus()
+      }
+    }
+  }
+
   get group() {
     const { groupId } = this.props.training
     const { groups } = this.props.dictionary
@@ -28,9 +40,26 @@ class Training extends Component {
     return this.props.training.testingWord.id
   }
 
+  get progressPercent() {
+    const { history, wordsCount } = this.props.training
+    const wordsChecked = history.length
+
+    if (wordsChecked >= wordsCount) {
+      return 100
+    }
+
+    return Math.round(wordsChecked / wordsCount * 100)
+
+  }
+
   curryChangeText() {
     return ev => {
-      const string = ev.target.value.trim()
+      const string = ev.target.value
+
+      if (string.trim() === '') {
+        this.props.changeUserSpellingAction('')
+        return
+      }
 
       this.props.changeUserSpellingAction(string)
     }
@@ -57,7 +86,19 @@ class Training extends Component {
   currySayAgainButtonClick() {
     return () => {
       this.props.sayTestWordAction()
-      this.refs.inputField.focus()
+    }
+  }
+
+  curryCheckSpellingButtonClick() {
+    return () => {
+      const spelling = this.refs.inputField.value.trim()
+
+      if (!spelling) {
+        this.props.sayTestWordAction()
+        return
+      }
+
+      this.props.checkUserSpellingAction(spelling)
     }
   }
 
@@ -65,54 +106,104 @@ class Training extends Component {
     return (
       <div className="training-ui">
         {this.renderTitle()}
-        {this.renderDictionaryInfo()}
-        {this.renderSayAgainButton()}
-        {this.renderInputField()}
+        {this.renderInputGroupAndProgressBar()}
         {this.renderSpellingHistory()}
       </div>
     )
   }
 
   renderTitle() {
-    return <h1>Training</h1>
-  }
-
-  renderDictionaryInfo() {
     const { title } = this.group
-    const { wordsCount } = this.props.training
+    const pageTitle = `${title}: training`
 
     return (
-      <div className="dictionary-info">
-        <div className="name">Group: {title}</div>
-        <div className="words-count">Words: {wordsCount}</div>
+      <Header>
+        <h1>{pageTitle}</h1>
+      </Header>
+    )
+  }
+
+  renderInputGroupAndProgressBar() {
+    return (
+      <div className="row">
+        <div className="col-md-8 col-lg-6">{this.renderInputGroup()}</div>
+        <div className="col-md-4 col-lg-6">{this.renderProgressBar()}</div>
+      </div>
+    )
+  }
+
+  renderProgressBar() {
+    const progress = this.progressPercent
+    const width = `${progress}%`
+    const style = {width}
+    const label = progress > 10 ? `${progress}%` : ''
+
+    return (
+      <div className="progress">
+        <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={style}>
+          {label}
+        </div>
+      </div>
+    )
+  }
+
+  renderInputGroup() {
+    return (
+      <div className="input-group">
+        <span className="input-group-btn">
+          {this.renderSayAgainButton()}
+        </span>
+        {this.renderInputField()}
+        <span className="input-group-btn">
+          {this.renderCheckSpellingButton()}
+        </span>
       </div>
     )
   }
 
   renderSayAgainButton() {
+    const props = {
+      onClick: this.currySayAgainButtonClick(),
+      className: 'btn btn-secondary',
+      type: 'button',
+    }
+
     return (
-      <div className="controls">
-        <button onClick={this.currySayAgainButtonClick()}>Say again</button>
-      </div>
+      <button {...props}>
+        Say again
+      </button>
+    )
+  }
+
+  renderCheckSpellingButton() {
+    const props = {
+      onClick: this.curryCheckSpellingButtonClick(),
+      className: 'btn btn-primary',
+      type: 'button',
+    }
+
+    return (
+      <button {...props}>
+        Check spelling
+      </button>
     )
   }
 
   renderInputField() {
-    const { userSpelling } = this.props.training
+    const { userSpelling, isSpeaking } = this.props.training
 
     const props = {
-      ref: 'inputField',
-      spellCheck: false,
-      value: userSpelling,
+      className: 'form-control',
       onChange: this.curryChangeText(),
       onKeyPress: this.curryKeyPress(),
+      ref: 'inputField',
+      spellCheck: false,
+      type: 'text',
+      value: userSpelling,
+      disabled: isSpeaking,
     }
 
-    return (
-      <div className="input-field-box">
-        <input {...props} />
-      </div>
-    )
+    return <input {...props} />
   }
 
   renderSpellingHistory() {
@@ -123,23 +214,45 @@ class Training extends Component {
     }
 
     return (
-      <div className="spelling-history">
-        <ol>
-          {history.map(this.renderHistoryItem.bind(this))}
-        </ol>
-      </div>
+      <table className="table mt-4">
+        <thead>
+          <tr>
+            <th>Your spelling</th>
+            <th>Dictionary</th>
+            <th>Stats</th>
+          </tr>
+        </thead>
+        <tbody>
+          {history.concat().reverse().map(this.renderHistoryItemRow.bind(this))}
+        </tbody>
+      </table>
     )
   }
 
-  renderHistoryItem(item, index) {
-    const className = item.isRight ? 'is-right' : 'is-wrong'
+  renderHistoryItemRow(item, index) {
+    const { spelling, isRight, rightSpelling, tries, fails } = item
+    const className = isRight ? 'table-success' : 'table-warning'
 
     return (
-      <li key={index} className={className}>
-        <span className="user-spelling">{item.spelling}</span>
-        <span className="icon">{item.isRight ? '✔' : ''}</span>
-        <span className="right-spelling">{item.isRight ? '' : item.rightSpelling}</span>
-      </li>
+      <tr key={index} className={className}>
+        <td>{spelling}</td>
+        <td>{rightSpelling}</td>
+        <td>{this.renderWordStats(tries, fails)}</td>
+      </tr>
+    )
+  }
+
+  renderWordStats(tries, fails) {
+    const percent = Math.round(((tries - fails) / tries) * 100)
+
+    return (
+      <div>
+        {tries - fails}
+        {' / '}
+        {tries}
+        {' '}
+        ({percent}%)
+      </div>
     )
   }
 }

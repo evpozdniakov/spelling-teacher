@@ -68,12 +68,16 @@ export function handleUserSpelling(store, next, action) {
   next(action)
 
   const { groupId, testingWord } = store.getState().training
+  const { groups } = store.getState().stats
+  const groupStats = groups.find(item => item.id === groupId)
+  const wordStats = groupStats.words.find(item => item.id === testingWord.id)
+  const { tries, fails } = wordStats
 
   if (spelling === testingWord.word) {
-    store.dispatch(registerRightSpelling(groupId, testingWord.id))
+    store.dispatch(registerRightSpelling(groupId, testingWord.id, tries + 1, fails))
   }
   else {
-    store.dispatch(registerWrongSpelling(groupId, testingWord.id))
+    store.dispatch(registerWrongSpelling(groupId, testingWord.id, tries + 1, fails + 1))
   }
 
   setTimeout(() => {

@@ -3,11 +3,14 @@ import { connect } from 'react-redux'
 import { openGroupForm } from '../actions/internal'
 import { deleteGroup } from '../actions/dictionary'
 import { startTraining } from '../actions/training'
+import Header from '../components/Header'
+import '../style/Dictionary.less'
 
 class Dictionary extends Component {
   curryStartTraining(id) {
-    return () => {
+    return ev => {
       this.props.startTrainingAction(id)
+      ev.stopPropagation()
     }
   }
 
@@ -25,7 +28,11 @@ class Dictionary extends Component {
 
   curryDeleteGroup(id) {
     return () => {
-      this.props.deleteGroupAction(id)
+      const msg = 'Delete this group of words?'
+
+      if (confirm(msg)) {
+        this.props.deleteGroupAction(id)
+      }
     }
   }
 
@@ -33,46 +40,66 @@ class Dictionary extends Component {
     return (
       <div className="dictionary">
         {this.renderTitle()}
-        {this.renderAddButton()}
         {this.renderGroups()}
+        {this.renderAddButton()}
       </div>
     )
   }
 
   renderTitle() {
-    return <h1>Dictionary</h1>
+    return (
+      <Header>
+        <h1>
+          Dictionary
+        </h1>
+      </Header>
+    )
   }
 
   renderAddButton() {
     return (
       <div className="controls">
-        <button className="btn btn-primary" onClick={this.curryAddGroup()}>Add words</button>
+        <button className="btn btn-primary" onClick={this.curryAddGroup()}>Add group of words</button>
       </div>
     )
   }
 
   renderGroups() {
-    return this.props.dictionary.groups.map(this.renderGroup.bind(this))
+    return (
+      <table className="table">
+        <thead>
+          <th>Group of words</th>
+          <th>Actions</th>
+        </thead>
+        <tbody>
+          {this.props.dictionary.groups.map(this.renderGroupRow.bind(this))}
+        </tbody>
+      </table>
+    )
   }
 
-  renderGroup(group) {
+  renderGroupRow(group) {
     const { id, title } = group
 
     return (
-      <div key={id} className="group">
-        <h3 className="title">
-          <a href="#" onClick={this.curryStartTraining(id)}>{title}</a>
-        </h3>
-
-        <div className="controls">
-          <button onClick={this.curryEditGroup(id)}>
+      <tr key={id} onClick={this.curryStartTraining(id)}>
+        <td>
+          {title}
+        </td>
+        <td>
+          <button className="btn btn-secondary" onClick={this.curryStartTraining(id)}>
+            Start training
+          </button>
+          {' '}
+          <button className="btn btn-outline-secondary" onClick={this.curryEditGroup(id)}>
             Edit
           </button>
-          <button onClick={this.curryDeleteGroup(id)}>
+          {' '}
+          <button className="btn btn-outline-danger" onClick={this.curryDeleteGroup(id)}>
             Delete
           </button>
-        </div>
-      </div>
+        </td>
+      </tr>
     )
   }
 }
