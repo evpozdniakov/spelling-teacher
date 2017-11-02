@@ -5,12 +5,14 @@ import '../style/Navbar.less'
 import {
   openGroupForm,
   openDictionary,
+  openSettings,
 } from '../actions/internal'
 
 import {
   _DICTIONARY,
   _FORM,
   _TRAINING,
+  _SETTINGS,
 } from '../constants'
 
 class Navbar extends Component {
@@ -38,6 +40,14 @@ class Navbar extends Component {
     }
   }
 
+  get settingsNavItem() {
+    return {
+      title: 'Settings',
+      mode: _SETTINGS,
+      action: this.props.openSettingsAction,
+    }
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-light mb-4">
@@ -50,6 +60,7 @@ class Navbar extends Component {
             {this.renderNavItem(this.dictionaryNavItem)}
             {this.renderNavItem(this.formNavItem)}
             {this.renderNavItem(this.trainingNavItem)}
+            {this.renderNavItem(this.settingsNavItem)}
           </ul>
         </div>
       </nav>
@@ -90,4 +101,5 @@ export default connect(state => {
 }, {
   openGroupFormAction: openGroupForm,
   openDictionaryAction: openDictionary,
+  openSettingsAction: openSettings,
 })(Navbar)

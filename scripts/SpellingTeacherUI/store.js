@@ -5,6 +5,7 @@ import { createStore, compose, applyMiddleware } from 'redux'
 import { createLogger } from 'redux-logger'
 
 import { reducerNames, combinedReducers } from './reducers'
+import { getInitState as getSettingsInitState, serializeState as serializeSettingsState } from './ducks/settings'
 
 import api from './middlewares/api'
 
@@ -36,6 +37,11 @@ function deserialize(data = {}) {
     return {reducerName, state}
   })
 
+  reducerStates.push({
+    reducerName: 'settings',
+    state: getSettingsInitState(data.settings),
+  })
+
   const state = reducerStates.reduce((res, item) => ({
     ...res,
     [item.reducerName]: item.state,
@@ -50,6 +56,11 @@ export function serializeAppState(state) {
     const data = serializeState(state[reducerName])
 
     return {reducerName, data}
+  })
+
+  reducerData.push({
+    reducerName: 'settings',
+    data: serializeSettingsState(state.settings)
   })
 
   const data = reducerData.reduce((res, item) => ({

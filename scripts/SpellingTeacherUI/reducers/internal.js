@@ -6,6 +6,7 @@ import {
   _GROUP,
   _MAIN,
   _PAGE,
+  _SETTINGS,
   _TRAINING,
 } from '../constants'
 
@@ -30,6 +31,12 @@ export default (state = {}, action) => {
       return {
         ...state,
         mode: _TRAINING,
+      }
+
+    case OPEN + _SETTINGS:
+      return {
+        ...state,
+        mode: _SETTINGS,
       }
 
     default:

@@ -68,8 +68,10 @@ class Dictionary extends Component {
     return (
       <table className="table">
         <thead>
-          <th>Group of words</th>
-          <th>Actions</th>
+          <tr>
+            <th>Group of words</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
           {this.props.dictionary.groups.map(this.renderGroupRow.bind(this))}

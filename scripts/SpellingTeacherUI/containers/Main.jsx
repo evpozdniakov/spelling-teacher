@@ -4,15 +4,23 @@ import Navbar from './Navbar'
 import Dictionary from './Dictionary'
 import Form from './Form'
 import Training from './Training'
+import Settings from './Settings'
+import { styleSettingsSelector } from '../ducks/settings'
+import { changeElementColor } from '../utils'
 import '../style/Main.less'
 
 import {
   _DICTIONARY,
   _FORM,
   _TRAINING,
+  _SETTINGS,
 } from '../constants'
 
 class Main extends Component {
+  componentDidMount() {
+    this.applyUserStyle()
+  }
+
   get isFormMode() {
     const { mode } = this.props.internal
 
@@ -31,6 +39,20 @@ class Main extends Component {
     return mode === _DICTIONARY
   }
 
+  get isSettingsMode() {
+    const { mode } = this.props.internal
+
+    return mode === _SETTINGS
+  }
+
+  applyUserStyle() {
+    const { styleSettings } = this.props
+
+    Object.keys(styleSettings).forEach(key => {
+      changeElementColor(key, styleSettings[key])
+    })
+  }
+
   render() {
     return (
       <div className="container">
@@ -38,6 +60,7 @@ class Main extends Component {
         {this.renderDictionary()}
         {this.renderForm()}
         {this.renderTrainingUI()}
+        {this.renderSettings()}
       </div>
     )
   }
@@ -96,11 +119,23 @@ class Main extends Component {
       <Training />
     )
   }
+
+  renderSettings() {
+    if (!this.isSettingsMode) {
+      return null
+    }
+
+    return <Settings />
+  }
 }
 
 export default connect(state => {
   const { internal, dictionary } = state
-  return {internal, dictionary}
+  return {
+    internal,
+    dictionary,
+    styleSettings: styleSettingsSelector(state),
+  }
 }, {
 
 })(Main)
