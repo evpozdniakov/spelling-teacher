@@ -26,28 +26,48 @@ class Settings extends Component {
   }
 
   render() {
-    const currentColor = this.getElementColor(SETTINGS_ELEMENT.PRIMARY_BUTTON)
-
-    console.log('--- currentColor', currentColor)
-
     return (
       <div className="settings">
         <table>
           <tbody>
-            <tr>
-              <td>
-                <ColorPickerButton currentColor={currentColor} onColorChange={hex => this.props.changeColor(SETTINGS_ELEMENT.PRIMARY_BUTTON, hex)} />
-              </td>
-              <td>
-                Primary button
-              </td>
-              <td>
-                <button className="btn btn-primary">Primary</button>
-              </td>
-            </tr>
+            {[{
+              type: SETTINGS_ELEMENT.PRIMARY_BUTTON,
+              title: 'Primary button',
+              element: <button className="btn btn-primary">Primary</button>,
+            }, {
+              type: SETTINGS_ELEMENT.SECONDARY_BUTTON,
+              title: 'Secondary button',
+              element: <button className="btn btn-secondary">Secondary</button>,
+            }, {
+              type: SETTINGS_ELEMENT.TABLE_CELL_WARNING,
+              title: 'Warning cell',
+              element: <table className="table"><tbody><tr className="table-warning"><td>Warning</td></tr></tbody></table>,
+            }, {
+              type: SETTINGS_ELEMENT.TABLE_CELL_SUCCESS,
+              title: 'Success cell',
+              element: <table className="table"><tbody><tr className="table-success"><td>Success</td></tr></tbody></table>,
+            }].map(this.renderRow.bind(this))}
           </tbody>
         </table>
       </div>
+    )
+  }
+
+  renderRow({type, title, element}, index) {
+    return (
+      <tr key={index} className="settings-entry">
+        <td>
+          <ColorPickerButton
+            currentColor={this.getElementColor(type)}
+            onColorChange={hex => this.props.changeColor(type, hex)} />
+        </td>
+        <td>
+          {title}
+        </td>
+        <td>
+          {element}
+        </td>
+      </tr>
     )
   }
 }
