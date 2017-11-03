@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ColorPickerButton from '../components/ColorPickerButton'
 import { SETTINGS_ELEMENT } from '../config'
-import { changeColor } from '../ducks/settings'
+import { changeColor, styleSettingsSelector } from '../ducks/settings'
 import { changeElementColor } from '../utils'
 import '../style/settings.less'
 
 class Settings extends Component {
   componentWillReceiveProps(nextProps) {
-    const nextSettings = nextProps.settings
-    const prevSettings = this.props.settings
+    const nextSettings = nextProps.styleSettings
+    const prevSettings = this.props.styleSettings
 
     Object.values(SETTINGS_ELEMENT).map(element => {
       const nextColor = nextSettings[element]
@@ -21,14 +21,22 @@ class Settings extends Component {
     })
   }
 
+  getElementColor(elementType) {
+    return this.props.styleSettings[elementType]
+  }
+
   render() {
+    const currentColor = this.getElementColor(SETTINGS_ELEMENT.PRIMARY_BUTTON)
+
+    console.log('--- currentColor', currentColor)
+
     return (
       <div className="settings">
         <table>
           <tbody>
             <tr>
               <td>
-                <ColorPickerButton onColorChange={hex => this.props.changeColor(SETTINGS_ELEMENT.PRIMARY_BUTTON, hex)} />
+                <ColorPickerButton currentColor={currentColor} onColorChange={hex => this.props.changeColor(SETTINGS_ELEMENT.PRIMARY_BUTTON, hex)} />
               </td>
               <td>
                 Primary button
@@ -44,9 +52,9 @@ class Settings extends Component {
   }
 }
 
-export default connect(state => {
-  const { internal, settings } = state
-  return {internal, settings}
-}, {
+export default connect(state => ({
+  internal: state.internal,
+  styleSettings: styleSettingsSelector(state),
+}), {
   changeColor,
 })(Settings)

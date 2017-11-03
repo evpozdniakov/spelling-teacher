@@ -1,7 +1,19 @@
 import React, { Component } from 'react'
 import { SwatchesPicker } from 'react-color'
+import PropTypes from 'prop-types'
+
+var propTypes
+
+if (NODE_ENV === 'development') {
+  propTypes = {
+    onColorChange: PropTypes.func.isRequired,
+    currentColor: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  }
+}
 
 class ColorPickerButton extends Component {
+  static propTypes = propTypes
+
   state = {
     isSwatcherShown: false
   }
@@ -64,11 +76,13 @@ class ColorPickerButton extends Component {
       return null
     }
 
+    const { currentColor, onColorChange } = this.props
+    const { hex } = currentColor || {}
+    const color = hex || currentColor
+
     const props = {
-      color: '#d32f2f',
-      onChange: color => {
-        this.props.onColorChange(color)
-      },
+      color,
+      onChange: onColorChange,
     }
 
     const style = {position: 'absolute'}
