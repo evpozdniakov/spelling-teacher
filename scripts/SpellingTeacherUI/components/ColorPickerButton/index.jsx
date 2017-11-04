@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { SwatchesPicker } from 'react-color'
 import PropTypes from 'prop-types'
+import './style.less'
 
 var propTypes
 
@@ -29,10 +30,8 @@ class ColorPickerButton extends Component {
   }
 
   render() {
-    const style = {display: 'inline-block'}
-
     return (
-      <div style={style}>
+      <div className="color-picker-button-ui">
         {this.renderToggleButton()}
         {this.renderOverlay()}
         {this.renderSwatcherPicker()}
@@ -41,13 +40,18 @@ class ColorPickerButton extends Component {
   }
 
   renderToggleButton() {
+    const { hex='#ccc' } = this.props.currentColor || {};
+
     const props = {
-      onClick: this.curryToggleSwatches()
+      onClick: this.curryToggleSwatches(),
+      style: {
+        backgroundColor: hex
+      }
     }
 
     return (
       <button {...props}>
-        {'pick color'}
+        {'\u00a0'}
       </button>
     )
   }
@@ -58,13 +62,7 @@ class ColorPickerButton extends Component {
     }
 
     const props = {
-      style: {
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-      },
+      className: 'overlay',
       onClick: this.curryToggleSwatches()
     }
 
@@ -85,10 +83,8 @@ class ColorPickerButton extends Component {
       onChange: onColorChange,
     }
 
-    const style = {position: 'absolute'}
-
     return (
-      <div style={style}>
+      <div className="swatches">
         <SwatchesPicker {...props} />
       </div>
     )

@@ -11,15 +11,22 @@ export const CHANGE_COLOR = `${prefix}/CHANGE_COLOR`
 
 
 // REDUCER
+const defaultColors = {
+  [SETTINGS_ELEMENT.NAV_TEXT]: {hex: '#000'},
+  [SETTINGS_ELEMENT.NAV_BACKGROUND]: {hex: '#ddd'},
+  [SETTINGS_ELEMENT.PRIMARY_BUTTON]: {hex: '#007bff'},
+  [SETTINGS_ELEMENT.SECONDARY_BUTTON]: {hex: '#868e96'},
+  [SETTINGS_ELEMENT.DANGER_BUTTON]: {hex: '#dc3545'},
+  [SETTINGS_ELEMENT.TABLE_CELL_WARNING]: {hex: '#ffeeba'},
+  [SETTINGS_ELEMENT.TABLE_CELL_SUCCESS]: {hex: '#c3e6cb'},
+  [SETTINGS_ELEMENT.BODY_TEXT]: {hex: '#000'},
+  [SETTINGS_ELEMENT.PROGRESS_BACKGROUND]: {hex: '#e9ecef'},
+  [SETTINGS_ELEMENT.PROGRESS_COLOR]: {hex: '#007bff'},
+  [SETTINGS_ELEMENT.TABLE_BORDER_COLOR]: {hex: '#e9ecef'},
+}
+
 const StateRecord = imRecord({
-  colors: imMap({
-    [SETTINGS_ELEMENT.PRIMARY_BUTTON]: {},
-    [SETTINGS_ELEMENT.SECONDARY_BUTTON]: {},
-    [SETTINGS_ELEMENT.DANGER_BUTTON]: {},
-    [SETTINGS_ELEMENT.TABLE_CELL_WARNING]: {},
-    [SETTINGS_ELEMENT.TABLE_CELL_SUCCESS]: {},
-    [SETTINGS_ELEMENT.TEXT_COLOR]: {},
-  }),
+  colors: imMap(defaultColors),
   _conversion: 0,
 })
 
@@ -27,7 +34,10 @@ export function getInitState(data={}) {
   const { colors, _conversion } = conversion1(data)
 
   return new StateRecord({
-    colors: imMap(colors),
+    colors: imMap({
+      ...defaultColors,
+      ...colors,
+    }),
     _conversion,
   })
 }

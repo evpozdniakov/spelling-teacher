@@ -140,7 +140,7 @@ class Training extends Component {
 
     return (
       <div className="progress">
-        <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={style}>
+        <div className="progress-bar progress-bar-striped" role="progressbar" style={style}>
           {label}
         </div>
       </div>

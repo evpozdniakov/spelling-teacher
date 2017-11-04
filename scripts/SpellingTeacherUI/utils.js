@@ -19,8 +19,23 @@ export function changeElementColor(element, color) {
     case SETTINGS_ELEMENT.TABLE_CELL_SUCCESS:
       styleTable('table-success', color)
       break
-    case SETTINGS_ELEMENT.TEXT_COLOR:
+    case SETTINGS_ELEMENT.BODY_TEXT:
       applyCssRule(`body {color: ${color.hex}}`)
+      break
+    case SETTINGS_ELEMENT.NAV_TEXT:
+      styleNavText(color)
+      break
+    case SETTINGS_ELEMENT.NAV_BACKGROUND:
+      applyCssRule(`.navbar {background-color: ${color.hex}}`)
+      break
+    case SETTINGS_ELEMENT.PROGRESS_BACKGROUND:
+      applyCssRule(`.progress {background-color: ${color.hex}}`)
+      break
+    case SETTINGS_ELEMENT.PROGRESS_COLOR:
+      applyCssRule(`.progress-bar {background-color: ${color.hex}}`)
+      break
+    case SETTINGS_ELEMENT.TABLE_BORDER_COLOR:
+      applyCssRule(`.table td, .table th {border-top: 1px solid ${color.hex}}`)
       break
   }
 }
@@ -75,5 +90,25 @@ function styleOutlineButton(className, color) {
 function styleTable(className, color) {
   applyCssRule(`.${className}, .${className}>td, .${className}>th {
     background-color: ${color.hex}
+  }`)
+}
+
+function styleNavText(color) {
+  const { r, g, b } = color.rgb
+
+  applyCssRule(`.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color: rgba(${r}, ${g}, ${b}, 0.9)
+  }`)
+
+  applyCssRule(`.navbar-light .navbar-nav .nav-link {
+    color: rgba(${r}, ${g}, ${b}, 0.5)
+  }`)
+
+  applyCssRule(`.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    color: rgba(${r}, ${g}, ${b}, 0.7)
+  }`)
+
+  applyCssRule(`.navbar-light .navbar-nav .nav-link.disabled {
+    color: rgba(${r}, ${g}, ${b}, 0.3)
   }`)
 }

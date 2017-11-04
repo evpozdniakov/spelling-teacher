@@ -6,5 +6,10 @@ export const SETTINGS_ELEMENT = {
   DANGER_BUTTON: 'dangerButton',
   TABLE_CELL_WARNING: 'tableCellWarning',
   TABLE_CELL_SUCCESS: 'tableCellSuccess',
-  TEXT_COLOR: 'textColor',
+  BODY_TEXT: 'bodyText',
+  TABLE_BORDER_COLOR: 'tableBorderColor',
+  NAV_BACKGROUND: 'navBackground',
+  NAV_TEXT: 'navText',
+  PROGRESS_COLOR: 'progressColor',
+  PROGRESS_BACKGROUND: 'progressBackground',
 }

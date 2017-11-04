@@ -28,9 +28,24 @@ class Settings extends Component {
   render() {
     return (
       <div className="settings">
-        <table>
+        <table className="table">
           <tbody>
             {[{
+              type: SETTINGS_ELEMENT.BODY_TEXT,
+              title: 'Text',
+              children: <div>Lorem ipsum</div>,
+            }, {
+              types: [
+                SETTINGS_ELEMENT.NAV_TEXT,
+                SETTINGS_ELEMENT.NAV_BACKGROUND,
+              ],
+              title: 'Navigation',
+              children: null,
+            }, {
+              type: SETTINGS_ELEMENT.TABLE_BORDER_COLOR,
+              title: 'Table border',
+              children: null,
+            }, {
               type: SETTINGS_ELEMENT.PRIMARY_BUTTON,
               title: 'Primary button',
               children: <button className="btn btn-primary">Primary</button>,
@@ -54,9 +69,12 @@ class Settings extends Component {
               title: 'Success cell',
               children: <table className="table"><tbody><tr className="table-success"><td>Success</td></tr></tbody></table>,
             }, {
-              type: SETTINGS_ELEMENT.TEXT_COLOR,
-              title: 'Text',
-              children: <div>Lorem ipsum</div>,
+              types: [
+                SETTINGS_ELEMENT.PROGRESS_COLOR,
+                SETTINGS_ELEMENT.PROGRESS_BACKGROUND,
+              ],
+              title: 'Progress',
+              children: <div className="progress"><div className="progress-bar progress-bar-striped"></div></div>,
             }].map(this.renderRow.bind(this))}
           </tbody>
         </table>
@@ -64,13 +82,11 @@ class Settings extends Component {
     )
   }
 
-  renderRow({type, title, children}, index) {
+  renderRow({type, types, title, children}, index) {
     return (
       <tr key={index} className="settings-entry">
-        <td>
-          <ColorPickerButton
-            currentColor={this.getElementColor(type)}
-            onColorChange={hex => this.props.changeColor(type, hex)} />
+        <td className="picker">
+          {(types || [type]).map(this.renderColorPickerButton.bind(this))}
         </td>
         <td>
           {title}
@@ -80,6 +96,16 @@ class Settings extends Component {
         </td>
       </tr>
     )
+  }
+
+  renderColorPickerButton(type, index) {
+    const props = {
+      key: index,
+      currentColor: this.getElementColor(type),
+      onColorChange: hex => this.props.changeColor(type, hex),
+    }
+
+    return <ColorPickerButton {...props} />
   }
 }
 
