@@ -2,41 +2,43 @@ import { SETTINGS_ELEMENT } from './config'
 import applyCssRule from 'dynamic-css-rules'
 
 export function changeElementColor(element, color) {
-  switch (element) {
-    case SETTINGS_ELEMENT.PRIMARY_BUTTON:
-      styleButton('btn-primary', color)
-      break
-    case SETTINGS_ELEMENT.SECONDARY_BUTTON:
-      styleButton('btn-secondary', color)
-      styleOutlineButton('btn-outline-secondary', color)
-      break
-    case SETTINGS_ELEMENT.DANGER_BUTTON:
-      styleOutlineButton('btn-outline-danger', color)
-      break
-    case SETTINGS_ELEMENT.TABLE_CELL_WARNING:
-      styleTable('table-warning', color)
-      break
-    case SETTINGS_ELEMENT.TABLE_CELL_SUCCESS:
-      styleTable('table-success', color)
-      break
-    case SETTINGS_ELEMENT.BODY_TEXT:
-      applyCssRule(`body {color: ${color.hex}}`)
-      break
-    case SETTINGS_ELEMENT.NAV_TEXT:
-      styleNavText(color)
-      break
-    case SETTINGS_ELEMENT.NAV_BACKGROUND:
-      applyCssRule(`.navbar {background-color: ${color.hex}}`)
-      break
-    case SETTINGS_ELEMENT.PROGRESS_BACKGROUND:
-      applyCssRule(`.progress {background-color: ${color.hex}}`)
-      break
-    case SETTINGS_ELEMENT.PROGRESS_COLOR:
-      applyCssRule(`.progress-bar {background-color: ${color.hex}}`)
-      break
-    case SETTINGS_ELEMENT.TABLE_BORDER_COLOR:
-      applyCssRule(`.table td, .table th {border-top: 1px solid ${color.hex}}`)
-      break
+  if (color && color.rgb) {
+    switch (element) {
+      case SETTINGS_ELEMENT.PRIMARY_BUTTON:
+        styleButton('btn-primary', color)
+        break
+      case SETTINGS_ELEMENT.SECONDARY_BUTTON:
+        styleButton('btn-secondary', color)
+        styleOutlineButton('btn-outline-secondary', color)
+        break
+      case SETTINGS_ELEMENT.DANGER_BUTTON:
+        styleOutlineButton('btn-outline-danger', color)
+        break
+      case SETTINGS_ELEMENT.TABLE_CELL_WARNING:
+        styleTable('table-warning', color)
+        break
+      case SETTINGS_ELEMENT.TABLE_CELL_SUCCESS:
+        styleTable('table-success', color)
+        break
+      case SETTINGS_ELEMENT.BODY_TEXT:
+        applyCssRule(`body {color: ${color.hex}}`)
+        break
+      case SETTINGS_ELEMENT.NAV_TEXT:
+        styleNavText(color)
+        break
+      case SETTINGS_ELEMENT.NAV_BACKGROUND:
+        applyCssRule(`.navbar {background-color: ${color.hex}}`)
+        break
+      case SETTINGS_ELEMENT.PROGRESS_BACKGROUND:
+        applyCssRule(`.progress {background-color: ${color.hex}}`)
+        break
+      case SETTINGS_ELEMENT.PROGRESS_COLOR:
+        applyCssRule(`.progress-bar {background-color: ${color.hex}}`)
+        break
+      case SETTINGS_ELEMENT.TABLE_BORDER_COLOR:
+        applyCssRule(`.table td, .table th {border-top: 1px solid ${color.hex}}`)
+        break
+    }
   }
 }
 
