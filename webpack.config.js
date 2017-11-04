@@ -123,7 +123,7 @@ if (PROD_MODE) {
       uglifyOptions: {
         ie8: false,
         ecma: 8,
-        warnings: true,
+        warnings: false,
       }
     }),
     new CompressionPlugin({
