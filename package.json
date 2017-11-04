@@ -7,7 +7,7 @@
     "start": "node server.js",
     "build": "cross-env BABEL_ENV=production ./node_modules/.bin/webpack --config webpack.config.production.js",
     "lint": "eslint --cache --ignore-path .eslintignore --format=node_modules/eslint-formatter-pretty --ext .jsx --ext .js .",
-    "dist": "NODE_ENV=production webpack --progress",
+    "dist": "NODE_ENV=production&&webpack --progress",
     "windist": "SET NODE_ENV=production&&webpack --progress",
     "test": "npm run lint"
   },
