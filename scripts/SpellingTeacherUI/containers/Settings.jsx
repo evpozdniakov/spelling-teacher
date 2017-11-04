@@ -33,19 +33,30 @@ class Settings extends Component {
             {[{
               type: SETTINGS_ELEMENT.PRIMARY_BUTTON,
               title: 'Primary button',
-              element: <button className="btn btn-primary">Primary</button>,
+              children: <button className="btn btn-primary">Primary</button>,
             }, {
               type: SETTINGS_ELEMENT.SECONDARY_BUTTON,
               title: 'Secondary button',
-              element: <button className="btn btn-secondary">Secondary</button>,
+              children: [
+                <button key="secondary" className="btn btn-secondary">Secondary</button>,
+                <button key="secondary-outline" className="btn btn-outline-secondary">Outline</button>
+              ],
+            }, {
+              type: SETTINGS_ELEMENT.DANGER_BUTTON,
+              title: 'Danger button',
+              children: <button className="btn btn-outline-danger">Danger</button>,
             }, {
               type: SETTINGS_ELEMENT.TABLE_CELL_WARNING,
               title: 'Warning cell',
-              element: <table className="table"><tbody><tr className="table-warning"><td>Warning</td></tr></tbody></table>,
+              children: <table className="table"><tbody><tr className="table-warning"><td>Warning</td></tr></tbody></table>,
             }, {
               type: SETTINGS_ELEMENT.TABLE_CELL_SUCCESS,
               title: 'Success cell',
-              element: <table className="table"><tbody><tr className="table-success"><td>Success</td></tr></tbody></table>,
+              children: <table className="table"><tbody><tr className="table-success"><td>Success</td></tr></tbody></table>,
+            }, {
+              type: SETTINGS_ELEMENT.TEXT_COLOR,
+              title: 'Text',
+              children: <div>Lorem ipsum</div>,
             }].map(this.renderRow.bind(this))}
           </tbody>
         </table>
@@ -53,7 +64,7 @@ class Settings extends Component {
     )
   }
 
-  renderRow({type, title, element}, index) {
+  renderRow({type, title, children}, index) {
     return (
       <tr key={index} className="settings-entry">
         <td>
@@ -65,7 +76,7 @@ class Settings extends Component {
           {title}
         </td>
         <td>
-          {element}
+          {children}
         </td>
       </tr>
     )

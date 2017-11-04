@@ -15,8 +15,10 @@ const StateRecord = imRecord({
   colors: imMap({
     [SETTINGS_ELEMENT.PRIMARY_BUTTON]: {},
     [SETTINGS_ELEMENT.SECONDARY_BUTTON]: {},
+    [SETTINGS_ELEMENT.DANGER_BUTTON]: {},
     [SETTINGS_ELEMENT.TABLE_CELL_WARNING]: {},
     [SETTINGS_ELEMENT.TABLE_CELL_SUCCESS]: {},
+    [SETTINGS_ELEMENT.TEXT_COLOR]: {},
   }),
   _conversion: 0,
 })
