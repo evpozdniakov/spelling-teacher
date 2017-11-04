@@ -48,18 +48,18 @@ class Settings extends Component {
             }, {
               type: SETTINGS_ELEMENT.PRIMARY_BUTTON,
               title: 'Primary button',
-              children: <button className="btn btn-primary">Primary</button>,
+              children: <button className="btn btn-primary">Add words</button>,
             }, {
               type: SETTINGS_ELEMENT.SECONDARY_BUTTON,
               title: 'Secondary button',
               children: [
-                <button key="secondary" className="btn btn-secondary">Secondary</button>,
-                <button key="secondary-outline" className="btn btn-outline-secondary">Outline</button>
+                <button key="secondary" className="btn btn-secondary">Start training</button>,
+                <button key="secondary-outline" className="btn btn-outline-secondary">Edit</button>
               ],
             }, {
               type: SETTINGS_ELEMENT.DANGER_BUTTON,
               title: 'Danger button',
-              children: <button className="btn btn-outline-danger">Danger</button>,
+              children: <button className="btn btn-outline-danger">Delete</button>,
             }, {
               type: SETTINGS_ELEMENT.TABLE_CELL_WARNING,
               title: 'Warning cell',
