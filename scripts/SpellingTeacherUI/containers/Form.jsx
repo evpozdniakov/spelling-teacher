@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { changeFormField } from '../actions/form'
-import { createGroup, updateGroup } from '../actions/dictionary'
+import { createGroup, updateGroup } from '../ducks/dictionary'
 import { openDictionary } from '../actions/internal'
 import Header from '../components/Header'
 

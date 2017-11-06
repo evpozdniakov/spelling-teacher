@@ -2,9 +2,9 @@
 
 import { combineReducers } from 'redux'
 import settings from '../ducks/settings'
+import dictionary from '../ducks/dictionary'
 
 export const reducerNames = [
-  'dictionary',
   'form',
   'internal',
   'stats',
@@ -19,6 +19,7 @@ function reducers() {
     .reduce((res, reducerName) => ({
       ...res,
       [reducerName]: require(`./${reducerName}`).default,
+      dictionary,
       settings,
     }), {})
 }

@@ -49,12 +49,11 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const { NODE_ENV } = process.env
-const MODE = NODE_ENV || 'development';
+const MODE = process.env.NODE_ENV || 'development';
 const PROD_MODE = MODE === 'production';
 const DEV_MODE = !PROD_MODE;
 
-console.log(`\nWebpack started in ${NODE_ENV} mode.`);
+console.log(`\nWebpack started in ${MODE} mode.`);
 
 const entry = ['./scripts/index'];
 

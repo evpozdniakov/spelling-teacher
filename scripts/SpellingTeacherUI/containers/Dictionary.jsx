@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { openGroupForm } from '../actions/internal'
-import { deleteGroup } from '../actions/dictionary'
+import { deleteGroup, groupsSelector } from '../ducks/dictionary'
 import { startTraining } from '../actions/training'
 import Header from '../components/Header'
 import '../style/Dictionary.less'
@@ -73,7 +73,7 @@ class Dictionary extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.dictionary.groups.map(this.renderGroupRow.bind(this))}
+          {this.props.groups.map(this.renderGroupRow.bind(this))}
         </tbody>
       </table>
     )
@@ -106,8 +106,10 @@ class Dictionary extends Component {
 }
 
 export default connect(state => {
-  const { internal, dictionary } = state
-  return {internal, dictionary}
+  return {
+    internal: state.internal,
+    groups: groupsSelector(state),
+  }
 }, {
   deleteGroupAction: deleteGroup,
   openGroupFormAction: openGroupForm,

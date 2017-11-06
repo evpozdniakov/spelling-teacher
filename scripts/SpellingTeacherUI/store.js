@@ -3,16 +3,27 @@
 
 import { createStore, compose, applyMiddleware } from 'redux'
 import { createLogger } from 'redux-logger'
-
+import createSagaMiddleware from 'redux-saga'
 import { reducerNames, combinedReducers } from './reducers'
-import { getInitState as getSettingsInitState, serializeState as serializeSettingsState } from './ducks/settings'
+import {
+  getInitState as getSettingsInitState,
+  serializeState as serializeSettingsState,
+} from './ducks/settings'
+import {
+  getInitState as getDictionaryInitState,
+  serializeState as serializeDictionaryState,
+} from './ducks/dictionary'
+import saga from './redux/saga'
 
 import api from './middlewares/api'
 
 export function makeStore(data) {
   const initState = deserialize(data)
-  const middlewares = compose(getMiddleware())
+  const sagaMiddleware = createSagaMiddleware()
+  const middlewares = compose(getMiddleware(sagaMiddleware))
   const store = createStore(combinedReducers, initState, middlewares)
+
+  sagaMiddleware.run(saga)
 
   if (NODE_ENV === 'development') {
     window.store = store
@@ -21,12 +32,12 @@ export function makeStore(data) {
   return store
 }
 
-function getMiddleware() {
+function getMiddleware(sagaMiddleware) {
   if (NODE_ENV === 'development') {
-    return applyMiddleware(api, createLogger())
+    return applyMiddleware(api, sagaMiddleware, createLogger())
   }
 
-  return applyMiddleware(api)
+  return applyMiddleware(api, sagaMiddleware)
 }
 
 function deserialize(data = {}) {
@@ -40,6 +51,11 @@ function deserialize(data = {}) {
   reducerStates.push({
     reducerName: 'settings',
     state: getSettingsInitState(data.settings),
+  })
+
+  reducerStates.push({
+    reducerName: 'dictionary',
+    state: getDictionaryInitState(data.dictionary),
   })
 
   const state = reducerStates.reduce((res, item) => ({
@@ -61,6 +77,11 @@ export function serializeAppState(state) {
   reducerData.push({
     reducerName: 'settings',
     data: serializeSettingsState(state.settings)
+  })
+
+  reducerData.push({
+    reducerName: 'dictionary',
+    data: serializeDictionaryState(state.dictionary)
   })
 
   const data = reducerData.reduce((res, item) => ({

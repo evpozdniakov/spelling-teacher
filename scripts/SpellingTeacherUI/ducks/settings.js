@@ -73,7 +73,6 @@ function conversion1(data) {
 
 
 // ACTION CREATORS
-
 export function changeColor(element, color) {
   return {
     type: CHANGE_COLOR,
@@ -83,6 +82,5 @@ export function changeColor(element, color) {
 
 
 // SELECTOR
-
 export const stateSelector = state => state[moduleName]
 export const styleSettingsSelector = createSelector(stateSelector, state => state.colors.toJSON())
